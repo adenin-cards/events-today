@@ -1,0 +1,309 @@
+$type: card
+rules: []
+properties:
+  title:
+    type: element
+    xtype: at-carbon-card-title
+    title: Outlook Events
+    xgridcols: 12
+    xstyle: 
+    xclass: 
+    actionListeners:
+      - _start
+  content:
+    type: element
+    xtype: at-core-view
+    model: 
+    view: |-
+      <div class="layout-vertical">
+        <div class="font-headline layout-horizontal bb pb">
+        	<at-carbon-moment class="ml" format="dddd, LL"></at-carbon-moment>
+        </div>
+        {% if items.length < 1 %}
+        <div class="layout-vertical layout-center-center font-headline green mlg" style="text-align:center;">
+        	You have no upcoming events today.
+        </div>
+        {% else %}
+        {% for item in items %}
+        {% if forloop.index > 1 %}
+        	<div class="expanded-only bb"></div>
+        {% endif %}
+        <div class="layout-horizontal mx mbsm mt {% if forloop.index > 1 %}expanded-only{%endif%}">
+        	<div class="layout-vertical layout-start mr">
+        		<at-carbon-moment datetime="{{ item.date }}" format="hh:mma"></at-carbon-moment>
+        	</div>
+        	<div class="layout-flex text-primary">
+        		<div class="layout-horizontal layout-center">
+          		{% if item.organizer.photo %}
+        			<iron-image class="mrsm" src="{{ item.organizer.photo }}" style="border-radius:50%;width:48px; height:48px;" sizing="cover" preload></iron-image>
+        			{% endif %}
+        			<div class="layout-vertical">
+                <div class="font-bold">
+                  {{ item.subject }}<span class="font-caption grey mlsm">{{ item.duration }}</span>
+                </div>
+                <div>{{ item.organizer.emailAddress.name }} (host)</div>
+        			</div>
+        		</div>
+        		<div class="layout-vertical mt mbsm">
+        			<div class="layout-horizontal layout-center layout-justified {%if item.showDetails == true %}mb{% endif %}">
+        				{% if item.onlineMeetingUrl %}
+                <at-carbon-button class="ml0 background-green" button-type="contained" button-color="green" label="Join Meeting" href="{{ item.onlineMeetingUrl }}"></at-carbon-button>
+                {% endif %}
+                {% if item.showDetails == true %}
+                <div class="layout-horizontal layout-end-justified layout-center mrsm" index="{{ forloop.index}} "at-click-action="post1">
+                	<span>Less details {{ today }}</span>
+                  <at-carbon-icon icon="now:caret-up" class="grey ico mlsm"></at-carbon-icon>
+                </div>
+                {% else %}
+                <div class="layout-horizontal layout-end-justified layout-center mrsm" index="{{ forloop.index}}" at-click-action="post1">
+                	<span>More details</span>
+                  <at-carbon-icon icon="now:caret-down" class="grey ico mlsm"></at-carbon-icon>
+                </div>
+               	{% endif %}
+        			</div>
+        			{% if item.showDetails == true %}
+              {% if item.location %}
+              <div class="layout-horizontal layout-center mb">
+                <at-carbon-icon icon="now:marker" class="green mrsm" style="width:16px;height:16px;"></at-carbon-icon>
+                <at-link href="{{ item.location.link }}" class="blue">{{ item.location.displayName }}</at-link>
+              </div>
+              {% endif %}
+              <div class="mbsm">Attendees ({{ item.attendees.length }})</div>
+          		<div class="layout-horizontal">
+        				{% assign overflow = 0 %}
+        				{% assign skipCount = true %}
+                {% for attendee in item.attendees %}
+                	{% if attendee.photo and forloop.index < 9 %}
+        						{% assign skipCount = false %}
+                		<iron-image class="mbsm mrsm" src="{{ attendee.photo }}" style="border-radius:50%;width:32px;height:32px;" sizing="cover" preload></iron-image>
+      						{% else %}
+      							{% assign overflow = overflow | plus: 1 %}
+                	{% endif %}
+                {% endfor %}
+      					{% if overflow > 0 and skipCount == false %}
+      						<div class="green">+{{ overflow }}</div>
+        				{% endif %}
+        			</div>
+              <at-carbon-clamp lines="4" class="mb mr">{{ item.bodyPreview }}</at-carbon-clamp>
+              {% if item.responseRequested and item.responseStatus.response != "organizer" %}
+              <div class="layout-horizontal layout-center mb">
+              	{% if item.responseStatus.response != "accepted" %}
+                <at-carbon-icon icon="now:cancel" class="red mrsm" style="width:16px;height:16px;"></at-carbon-icon>
+                <span>Not Accepted</span>
+                {% else %}
+                <at-carbon-icon icon="now:checkmark" class="green mrsm" style="width:16px;height:16px;"></at-carbon-icon>
+                <span>Accepted&nbsp;</span>
+        				<at-carbon-moment datetime="{{ item.responseStatus.time }}" format="llll"></at-carbon-moment>
+              	{% endif %}
+        			</div>
+              {% endif %}
+              <at-link href="{{ item.webLink }}" class="blue">View Meeting in Calendar</at-link>
+        			{% endif %}
+        		</div>
+        	</div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <style>
+      .ico {
+       	width: 12px;
+        height: 12px;
+      }
+      </style>
+    xgridcols: 12
+    xstyle: 
+    xclass: 
+    actionListeners:
+      - _all
+    default: 
+    modelRoot: state.model
+  footer4:
+    type: element
+    title: View Calendar
+    xtype: at-carbon-card-footer
+    xgridcols: 12
+    expandable: !!bool true
+    href: http://localhost
+    modelBind: 'expandable: items.length>1'
+$meta:
+  cardId: !!int 63
+  preview-data: |-
+    {
+      "items": [
+        {
+          "@odata.etag": "W/\"IbXQQXRjrEGHveA90TX5AQADnj+owg==\"",
+          "id": "AAMkADJlMTQ1MjAwLTcyMWItNDkzYS1iYzYyLWYyM2M5ZmNiZDYyMwBGAAAAAACVawIxJltTS5JfPy1OVLjdBwAhtdBBdGOsQYe94D3RNfkBAAAAAAENAAAhtdBBdGOsQYe94D3RNfkBAAOco2J7AAA=",
+          "createdDateTime": "2018-11-20T11:19:40.4508388Z",
+          "lastModifiedDateTime": "2018-11-23T07:51:42.7315245Z",
+          "reminderMinutesBeforeStart": 15,
+          "isReminderOn": true,
+          "subject": "MSGraph Connector Meeting",
+          "bodyPreview": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          "isCancelled": false,
+          "responseRequested": true,
+          "webLink": "https://outlook.office365.com/owa/?itemid=AAMkADJlMTQ1MjAwLTcyMWItNDkzYS1iYzYyLWYyM2M5ZmNiZDYyMwBGAAAAAACVawIxJltTS5JfPy1OVLjdBwAhtdBBdGOsQYe94D3RNfkBAAAAAAENAAAhtdBBdGOsQYe94D3RNfkBAAOco2J7AAA%3D&exvsurl=1&path=/calendar/item",
+          "onlineMeetingUrl": null,
+          "responseStatus": {
+            "response": "organizer",
+            "time": "0001-01-01T00:00:00Z"
+          },
+          "body": {
+            "contentType": "html",
+            "content": "<html>\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n<meta content=\"text/html; charset=us-ascii\">\r\n<style type=\"text/css\" style=\"display:none\">\r\n<!--\r\np\r\n\t{margin-top:0;\r\n\tmargin-bottom:0}\r\n-->\r\n</style>\r\n</head>\r\n<body dir=\"ltr\">\r\n<div id=\"divtagdefaultwrapper\" dir=\"ltr\" style=\"font-size:12pt; color:#000000; font-family:Calibri,Helvetica,sans-serif\">\r\n<div class=\"rps_ff31\">\r\n<div dir=\"ltr\">\r\n<div id=\"x_divtagdefaultwrapper\" dir=\"ltr\" style=\"font-size:12pt; color:rgb(0,0,0); font-family:Calibri,Helvetica,sans-serif,&quot;EmojiFont&quot;,&quot;Apple Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe UI Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols\">\r\n<span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span>\r\n<div></div>\r\n</div>\r\n</div>\r\n</div>\r\n</div>\r\n</body>\r\n</html>\r\n"
+          },
+          "start": {
+            "dateTime": "2018-11-22T14:45:00.0000000",
+            "timeZone": "UTC"
+          },
+          "end": {
+            "dateTime": "2018-11-22T16:15:00.0000000",
+            "timeZone": "UTC"
+          },
+          "location": {
+            "displayName": "London",
+            "locationUri": "https://www.bingapis.com/api/v6/localentities/8e0ba7b6-4225-fa8a-6369-1b5294e602a5",
+            "locationType": "postalAddress",
+            "uniqueId": "b83fad8a-6aae-491e-a896-3a4c906afd15",
+            "uniqueIdType": "locationStore",
+            "address": {
+              "street": "",
+              "city": "London",
+              "state": "England",
+              "countryOrRegion": "United Kingdom",
+              "postalCode": ""
+            },
+            "coordinates": {
+              "latitude": 51.5064,
+              "longitude": -0.1272
+            },
+            "link": "https://www.google.com/maps/search/?api=1&query=51.5064,-0.1272"
+          },
+          "attendees": [
+            {
+              "type": "required",
+              "status": {
+                "response": "none",
+                "time": "0001-01-01T00:00:00Z"
+              },
+              "emailAddress": {
+                "name": "Marketing",
+                "address": "Marketing@ToasterGroup.onmicrosoft.com"
+              },
+              "photo": "https://outlook.office.com/owa/service.svc/s/GetPersonaPhoto?email=Marketing@ToasterGroup.onmicrosoft.com&size=HR64x64"
+            },
+            {
+              "type": "required",
+              "status": {
+                "response": "none",
+                "time": "0001-01-01T00:00:00Z"
+              },
+              "emailAddress": {
+                "name": "lookup test",
+                "address": "lookup@ToasterGroup.onmicrosoft.com"
+              },
+              "photo": "https://outlook.office.com/owa/service.svc/s/GetPersonaPhoto?email=lookup@ToasterGroup.onmicrosoft.com&size=HR64x64"
+            }
+          ],
+          "organizer": {
+            "emailAddress": {
+              "name": "James Cook",
+              "address": "james@ToasterGroup.onmicrosoft.com"
+            },
+            "photo": "https://outlook.office.com/owa/service.svc/s/GetPersonaPhoto?email=james@ToasterGroup.onmicrosoft.com&size=HR64x64"
+          },
+          "date": "2018-11-22T14:45:00.000Z",
+          "duration": "1h 30m ",
+          "showDetails": false
+        },
+        {
+          "@odata.etag": "W/\"IbXQQXRjrEGHveA90TX5AQADoFhw+Q==\"",
+          "id": "AAMkADJlMTQ1MjAwLTcyMWItNDkzYS1iYzYyLWYyM2M5ZmNiZDYyMwBGAAAAAACVawIxJltTS5JfPy1OVLjdBwAhtdBBdGOsQYe94D3RNfkBAAAAAAENAAAhtdBBdGOsQYe94D3RNfkBAAOgJK5gAAA=",
+          "createdDateTime": "2018-11-26T10:12:37.2943669Z",
+          "lastModifiedDateTime": "2018-11-26T10:33:56.6859079Z",
+          "reminderMinutesBeforeStart": 15,
+          "isReminderOn": true,
+          "subject": "Test Event",
+          "bodyPreview": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+          "isCancelled": false,
+          "responseRequested": true,
+          "webLink": "https://outlook.office365.com/owa/?itemid=AAMkADJlMTQ1MjAwLTcyMWItNDkzYS1iYzYyLWYyM2M5ZmNiZDYyMwBGAAAAAACVawIxJltTS5JfPy1OVLjdBwAhtdBBdGOsQYe94D3RNfkBAAAAAAENAAAhtdBBdGOsQYe94D3RNfkBAAOgJK5gAAA%3D&exvsurl=1&path=/calendar/item",
+          "onlineMeetingUrl": null,
+          "responseStatus": {
+            "response": "organizer",
+            "time": "0001-01-01T00:00:00Z"
+          },
+          "body": {
+            "contentType": "html",
+            "content": "<html>\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n<meta content=\"text/html; charset=us-ascii\">\r\n<style type=\"text/css\" style=\"display:none\">\r\n<!--\r\np\r\n\t{margin-top:0;\r\n\tmargin-bottom:0}\r\n-->\r\n</style>\r\n</head>\r\n<body dir=\"ltr\">\r\n<div id=\"divtagdefaultwrapper\" dir=\"ltr\" style=\"font-size:12pt; color:#000000; font-family:Calibri,Helvetica,sans-serif\">\r\n<p style=\"margin-top:0; margin-bottom:0\"><span style=\"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Apple Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe UI Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px\">Duis aute irure dolor in reprehenderit\r\n in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span><br>\r\n</p>\r\n</div>\r\n</body>\r\n</html>\r\n"
+          },
+          "start": {
+            "dateTime": "2018-11-26T10:40:00.0000000",
+            "timeZone": "UTC"
+          },
+          "end": {
+            "dateTime": "2018-11-26T11:10:00.0000000",
+            "timeZone": "UTC"
+          },
+          "location": {
+            "displayName": "London",
+            "locationUri": "",
+            "locationType": "default",
+            "uniqueId": "London",
+            "uniqueIdType": "private",
+            "address": {
+              "street": "",
+              "city": "London",
+              "state": "England",
+              "countryOrRegion": "United Kingdom",
+              "postalCode": ""
+            },
+            "coordinates": {
+              "latitude": 51.5064,
+              "longitude": -0.1272
+            },
+            "link": "https://www.google.com/maps/search/?api=1&query=51.5064,-0.1272"
+          },
+          "attendees": [
+            {
+              "type": "required",
+              "status": {
+                "response": "none",
+                "time": "0001-01-01T00:00:00Z"
+              },
+              "emailAddress": {
+                "name": "test",
+                "address": "test@ToasterGroup.onmicrosoft.com"
+              },
+              "photo": "https://outlook.office.com/owa/service.svc/s/GetPersonaPhoto?email=test@ToasterGroup.onmicrosoft.com&size=HR64x64"
+            }
+          ],
+          "organizer": {
+            "emailAddress": {
+              "name": "James Cook",
+              "address": "james@ToasterGroup.onmicrosoft.com"
+            },
+            "photo": "https://outlook.office.com/owa/service.svc/s/GetPersonaPhoto?email=james@ToasterGroup.onmicrosoft.com&size=HR64x64"
+          },
+          "date": "2018-11-26T10:40:00.000Z",
+          "duration": "30m ",
+          "showDetails": false
+        }
+      ],
+      "_settings": {}
+    }
+  preview-mode: live
+  preview-container: event
+  search-term: 
+  service-url: 
+  xclass: 
+  xstyle: 
+  code: |
+    action.initialize = function(evt) {
+
+    }
+
+    action.post1 = function(state) {
+    	state.model.items[state.args.index-1].showDetails = !state.model.items[state.args.index-1].showDetails;
+    }
