@@ -70,6 +70,7 @@ properties:
                 <at-link href="{{ item.location.link }}" class="blue">{{ item.location.displayName }}</at-link>
               </div>
               {% endif %}
+      				{% if item.attendees %}
               <div class="mbsm">Attendees ({{ item.attendees.length }})</div>
           		<div class="layout-horizontal">
         				{% assign overflow = 0 %}
@@ -89,6 +90,7 @@ properties:
       						<div class="green">+{{ overflow }}</div>
         				{% endif %}
         			</div>
+              {% endif %}
               <at-carbon-clamp lines="4" class="mb mr">{{ item.bodyPreview }}</at-carbon-clamp>
               {% if item.responseRequested and item.responseStatus.response != "organizer" %}
               <div class="layout-horizontal layout-center mb">
