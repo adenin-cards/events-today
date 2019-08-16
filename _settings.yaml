@@ -24,7 +24,7 @@ CommonPart:
   VersionModifiedUtc: 2018-11-23T10:37:54.5789269Z
 ServicePart:
   ConnectorTypeName: ScriptConnector
-  ConnectorTypeId: !!int 19
+  ConnectorTypeId: !!int 9
   ConnectorName: ms-graph
   ServiceName: events-today
   Url: ~/api/adenin.GateKeeper.Connector/ms-graph/events-today
