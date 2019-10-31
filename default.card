@@ -10,6 +10,10 @@ properties:
     xclass: 
     actionListeners:
       - _start
+    links:
+      - title: New event
+        url: https://outlook.office.com/calendar/deeplink/compose
+        icon: now:plus
   content:
     type: element
     xtype: at-core-view
@@ -32,10 +36,10 @@ properties:
       			<div class="layout-horizontal mllg pl mr pbsm pt {% if forloop.index > 1 %}expanded-only{%endif%}" style="border-left:2px solid #eeeeee;margin-left:33px;padding-left:23px">
       				<div class="layout-flex text-primary">
       					<div class="layout-horizontal layout-center mr">
-      						<div class="background-blue" style="border-radius:50%;width:8px;height:8px;position:relative;left:-28px"></div>
-      						<at-carbon-moment class="font-caption font-bold blue" datetime="{{ item.date }}" format="h:mma" style="position:relative;left:-8px"></at-carbon-moment>
+      						<div class="{% if item.isCancelled %}background-red{% else %}background-blue{% endif %}" style="border-radius:50%;width:8px;height:8px;position:relative;left:-28px"></div>
+      						<at-carbon-moment class="font-caption font-bold {% if item.isCancelled %}red{% else %}blue{% endif %}" datetime="{{ item.date }}" format="LT" style="position:relative;left:-8px" utc></at-carbon-moment>
       					</div>
-      					<div class="font-subhead ptsm">{{ item.subject }}</div>
+      					<div class="font-subhead ptsm" style="{% if item.isCancelled %}text-decoration:line-through{% endif %}">{{ item.subject }}</div>
       					<div class="layout-horizontal layout-center ptsm">
       						{% if item.organizer.photo %}
       							<iron-image class="mrsm" src="{{ item.organizer.photo }}" style="border-radius:50%;width:32px;height:32px;" sizing="cover" preload></iron-image>
@@ -49,14 +53,14 @@ properties:
       					<div class="layout-vertical mt mbsm">
       						<div class="layout-horizontal layout-center layout-justified {%if item.showDetails == true %}mb{% endif %}">
       							{% if item.onlineMeetingUrl %}
-      								<at-carbon-button button-type="contained" button-color="primary" href="{{ item.onlineMeetingUrl }}">Join Meeting</at-carbon-button>
+      								<at-carbon-button button-type="contained" button-color="green" href="{{ item.onlineMeetingUrl }}">Join meeting</at-carbon-button>
       							{% endif %}
       							{% if item.showDetails == true %}
       								<div class="layout-horizontal layout-end-justified layout-center mrsm" index="{{ forloop.index}} "at-click-action="post1">
       									<span>Hide details {{ today }}</span>
       									<at-carbon-icon icon="now:caret-up" class="grey ico mlsm"></at-carbon-icon>
       								</div>
-      							{% else %}
+      							{% elsif item.attendees.length > 1 or item.location %}
       								<div class="layout-horizontal layout-end-justified layout-center mrsm" index="{{ forloop.index}}" at-click-action="post1">
       									<span>Show details</span>
       									<at-carbon-icon icon="now:caret-down" class="grey ico mlsm"></at-carbon-icon>
@@ -81,7 +85,9 @@ properties:
       											<iron-image class="mbsm mrsm" src="{{ attendee.photo }}" style="border-radius:50%;width:32px;height:32px;" sizing="cover" preload></iron-image>
       										{% elsif attendee.avatarProperties.initials and forloop.index < 9 %}
       											{% assign skipCount = false %}
-      											{% if item.organizer.emailAddress.address != attendee.emailAddress.address %}
+      											{% assign attendeeEmail = attendee.emailAddress.address | downcase %}
+      											{% assign organizerEmail = item.organizer.emailAddress.address | downcase %}
+      											{% if attendeeEmail != organizerEmail %}
       												<div class="events-attendee-avatar text-primary white background-grey mbsm mrsm" style="background-color:{{attendee.avatarProperties.color}}">{{ attendee.avatarProperties.initials }}</div>
       											{% endif %}
       										{% else %}
@@ -93,20 +99,20 @@ properties:
       									{% endif %}
       								</div>
       							{% endif %}
-      							<at-carbon-clamp lines="4" class="mb mr">{{ item.bodyPreview }}</at-carbon-clamp>
+      							<div class="mb mr pt">{{ item.bodyPreview }}</div>
       							{% if item.responseRequested and item.responseStatus.response != "organizer" and item.attendees.length > 1 %}
       								<div class="layout-horizontal layout-center mb">
       									{% if item.responseStatus.response != "accepted" %}
-      										<at-carbon-icon icon="now:cancel" class="red mrsm" style="width:16px;height:16px;"></at-carbon-icon>
+      										<at-carbon-icon icon="now:cancel" class="red mrsm" style="width:24px;height:24px;"></at-carbon-icon>
       										<span>Not Accepted</span>
       									{% else %}
-      										<at-carbon-icon icon="now:checkmark" class="green mrsm" style="width:16px;height:16px;"></at-carbon-icon>
+      										<at-carbon-icon icon="now:checkmark" class="green mrsm" style="width:24px;height:24px;"></at-carbon-icon>
       										<span>Accepted&nbsp;</span>
       										<at-carbon-moment datetime="{{ item.responseStatus.time }}" format="llll"></at-carbon-moment>
       									{% endif %}
       								</div>
       							{% endif %}
-      							<at-link href="{{ item.webLink }}" class="blue">View Meeting in Calendar</at-link>
+      							<at-link href="{{ item.webLink }}" class="blue pt">View Meeting in Calendar</at-link>
       						{% endif %}
       					</div>
       				</div>
@@ -165,51 +171,207 @@ $meta:
     {
       "items": [
         {
-          "@odata.etag": "W/\"CeWxBXCX9EGt3ceiDpFKcgABJhxxrA==\"",
-          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEX-AAA=",
-          "createdDateTime": "2019-10-29T12:40:11.3496852Z",
-          "lastModifiedDateTime": "2019-10-30T14:53:11.5523853Z",
-          "changeKey": "CeWxBXCX9EGt3ceiDpFKcgABJhxxrA==",
+          "@odata.etag": "W/\"CeWxBXCX9EGt3ceiDpFKcgABJhyRUA==\"",
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAEmZY6OAAA=",
+          "createdDateTime": "2019-10-31T15:24:31.48377Z",
+          "lastModifiedDateTime": "2019-10-31T15:27:03.4672004Z",
+          "changeKey": "CeWxBXCX9EGt3ceiDpFKcgABJhyRUA==",
           "categories": [],
-          "originalStartTimeZone": "GMT Standard Time",
-          "originalEndTimeZone": "GMT Standard Time",
-          "iCalUId": "040000008200E00074C5B7101A82E00800000000309CDCFF558ED5010000000000000000100000000F0FC0192E24C04C88F17D0DC0877FA3",
+          "originalStartTimeZone": "Eastern Standard Time",
+          "originalEndTimeZone": "Eastern Standard Time",
+          "iCalUId": "040000008200E00074C5B7101A82E0080000000070B414BEDD8FD501000000000000000010000000180E11E34BDAF448B0B64CE4EB71C100",
           "reminderMinutesBeforeStart": 15,
           "isReminderOn": false,
           "hasAttachments": false,
-          "subject": "Test Event Duplicate",
-          "bodyPreview": "Status Transdev\r\nMon, Oct 28, 2019 9:30 AM - 10:30 AM EDT\r\n\r\nPlease join my meeting from your computer, tablet or smartphone.\r\n\r\nhttps://global.gotomeeting.com/join/731110613\r\n\r\n\r\nYou can also dial in using your phone.\r\n(For supported devices, tap a one-t",
+          "subject": "Stand-Up Sales Meeting",
+          "bodyPreview": "",
           "importance": "normal",
           "sensitivity": "normal",
           "isAllDay": false,
           "isCancelled": false,
-          "isOrganizer": true,
+          "isOrganizer": false,
           "responseRequested": true,
           "seriesMasterId": null,
-          "showAs": "busy",
+          "showAs": "tentative",
           "type": "singleInstance",
-          "webLink": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEX%2FAAA%3D&exvsurl=1&path=/calendar/item",
-          "onlineMeetingUrl": "https://global.gotomeeting.com/join/731110613",
+          "webLink": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAEmZY6OAAA%3D&exvsurl=1&path=/calendar/item",
+          "onlineMeetingUrl": null,
           "recurrence": null,
           "responseStatus": {
-            "response": "organizer",
+            "response": "notResponded",
             "time": "0001-01-01T00:00:00Z"
           },
           "body": {
             "contentType": "html",
-            "content": "<html>\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n<meta content=\"text/html; charset=us-ascii\">\r\n<meta name=\"Generator\" content=\"Microsoft Word 15 (filtered medium)\">\r\n<style>\r\n<!--\r\n@font-face\r\n\t{font-family:\"Cambria Math\"}\r\n@font-face\r\n\t{font-family:Calibri}\r\np.MsoNormal, li.MsoNormal, div.MsoNormal\r\n\t{margin:0cm;\r\n\tmargin-bottom:.0001pt;\r\n\tfont-size:11.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\na:link, span.MsoHyperlink\r\n\t{color:#0563C1;\r\n\ttext-decoration:underline}\r\na:visited, span.MsoHyperlinkFollowed\r\n\t{color:#954F72;\r\n\ttext-decoration:underline}\r\np.msonormal0, li.msonormal0, div.msonormal0\r\n\t{margin-right:0cm;\r\n\tmargin-left:0cm;\r\n\tfont-size:11.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\nspan.EmailStyle18\r\n\t{font-family:\"Calibri\",sans-serif;\r\n\tcolor:windowtext}\r\n.MsoChpDefault\r\n\t{font-size:10.0pt}\r\n@page WordSection1\r\n\t{margin:72.0pt 72.0pt 72.0pt 72.0pt}\r\ndiv.WordSection1\r\n\t{}\r\n-->\r\n</style>\r\n</head>\r\n<body lang=\"EN-GB\" link=\"#0563C1\" vlink=\"#954F72\">\r\n<div class=\"WordSection1\">\r\n<p><span lang=\"EN-US\">Status Transdev <br>\r\nMon, Oct 28, 2019 9:30 AM - 10:30 AM EDT </span></p>\r\n<p><span lang=\"EN-US\">Please join my meeting from your computer, tablet or smartphone.\r\n</span></p>\r\n<p><span lang=\"EN-US\"><a href=\"https://global.gotomeeting.com/join/731110613\">https://global.gotomeeting.com/join/731110613</a>\r\n</span></p>\r\n<p class=\"MsoNormal\"><span lang=\"EN-US\">&nbsp;</span></p>\r\n<p><span lang=\"EN-US\">You can also dial in using your phone. <br>\r\n(For supported devices, tap a one-touch number below to join instantly.) </span></p>\r\n<p><span lang=\"EN-US\">United States: &#43;1 (571) 317-3129 <br>\r\n- One-touch: <a href=\"tel:&#43;15713173129,,731110613\">tel:&#43;15713173129,,731110613#</a>\r\n</span></p>\r\n<p><span lang=\"EN-US\">Access Code: 731-110-613 </span></p>\r\n<p class=\"MsoNormal\"><span lang=\"EN-US\">&nbsp;</span></p>\r\n<p><span lang=\"EN-US\">More phone numbers: <br>\r\n(For supported devices, tap a one-touch number below to join instantly.) </span></p>\r\n<p><span lang=\"EN-US\">Germany: &#43;49 692 5736 7317 <br>\r\n- One-touch: <a href=\"tel:&#43;4969257367317,,731110613\">tel:&#43;4969257367317,,731110613#</a>\r\n</span></p>\r\n<p><span lang=\"EN-US\">United Kingdom: &#43;44 330 221 0088 <br>\r\n- One-touch: <a href=\"tel:&#43;443302210088,,731110613\">tel:&#43;443302210088,,731110613#</a>\r\n</span></p>\r\n<p class=\"MsoNormal\"><span lang=\"EN-US\">&nbsp;</span></p>\r\n<p><span lang=\"EN-US\">New to GoToMeeting? Get the app now and be ready when your first meeting starts:\r\n<a href=\"https://global.gotomeeting.com/install/731110613\">https://global.gotomeeting.com/install/731110613</a></span></p>\r\n<p class=\"MsoNormal\"><span style=\"\">&nbsp;</span></p>\r\n</div>\r\n</body>\r\n</html>\r\n"
+            "content": "<html>\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n<meta content=\"text/html; charset=us-ascii\">\r\n<meta name=\"Generator\" content=\"Microsoft Word 15 (filtered medium)\">\r\n<style>\r\n<!--\r\n@font-face\r\n\t{font-family:\"Cambria Math\"}\r\n@font-face\r\n\t{font-family:Calibri}\r\np.MsoNormal, li.MsoNormal, div.MsoNormal\r\n\t{margin:0in;\r\n\tmargin-bottom:.0001pt;\r\n\tfont-size:11.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\na:link, span.MsoHyperlink\r\n\t{color:#0563C1;\r\n\ttext-decoration:underline}\r\na:visited, span.MsoHyperlinkFollowed\r\n\t{color:#954F72;\r\n\ttext-decoration:underline}\r\np.msonormal0, li.msonormal0, div.msonormal0\r\n\t{margin-right:0in;\r\n\tmargin-left:0in;\r\n\tfont-size:11.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\nspan.EmailStyle18\r\n\t{font-family:\"Calibri\",sans-serif;\r\n\tcolor:windowtext}\r\n.MsoChpDefault\r\n\t{font-size:10.0pt}\r\n@page WordSection1\r\n\t{margin:1.0in 1.0in 1.0in 1.0in}\r\ndiv.WordSection1\r\n\t{}\r\n-->\r\n</style>\r\n</head>\r\n<body lang=\"EN-US\" link=\"#0563C1\" vlink=\"#954F72\">\r\n<div class=\"WordSection1\">\r\n<p class=\"MsoNormal\">&nbsp;</p>\r\n</div>\r\n</body>\r\n</html>\r\n"
           },
           "start": {
-            "dateTime": "2019-10-30T17:00:00.0000000",
+            "dateTime": "2019-10-31T11:00:00.0000000",
             "timeZone": "UTC"
           },
           "end": {
-            "dateTime": "2019-10-30T17:30:00.0000000",
+            "dateTime": "2019-10-31T11:30:00.0000000",
+            "timeZone": "UTC"
+          },
+          "location": {
+            "displayName": "San Diego Meeting Room",
+            "locationType": "default",
+            "uniqueId": "San Diego Meeting Room",
+            "uniqueIdType": "private"
+          },
+          "locations": [
+            {
+              "displayName": "San Diego Meeting Room",
+              "locationType": "default",
+              "uniqueId": "San Diego Meeting Room",
+              "uniqueIdType": "private"
+            }
+          ],
+          "attendees": [
+            {
+              "type": "required",
+              "status": {
+                "response": "none",
+                "time": "0001-01-01T00:00:00Z"
+              },
+              "emailAddress": {
+                "name": "Martin Amm",
+                "address": "ma@adenin.com"
+              },
+              "avatarProperties": {
+                "initials": "MA",
+                "color": "purple"
+              }
+            },
+            {
+              "type": "required",
+              "status": {
+                "response": "none",
+                "time": "0001-01-01T00:00:00Z"
+              },
+              "emailAddress": {
+                "name": "Henry Amm",
+                "address": "Henry.Amm@adenin.com"
+              },
+              "avatarProperties": {
+                "initials": "HA",
+                "color": "green"
+              }
+            },
+            {
+              "type": "required",
+              "status": {
+                "response": "none",
+                "time": "0001-01-01T00:00:00Z"
+              },
+              "emailAddress": {
+                "name": "Oliver McNally",
+                "address": "oliver.mcnally@adenin.com"
+              },
+              "avatarProperties": {
+                "initials": "OM",
+                "color": "orange"
+              }
+            }
+          ],
+          "organizer": {
+            "emailAddress": {
+              "name": "Martin Amm",
+              "address": "ma@adenin.com"
+            },
+            "avatarProperties": {
+              "initials": "MA",
+              "color": "purple"
+            }
+          },
+          "date": "2019-10-31T11:00:00Z",
+          "duration": "30 min",
+          "showDetails": false,
+          "hasHappened": true
+        },
+        {
+          "@odata.etag": "W/\"CeWxBXCX9EGt3ceiDpFKcgABJhyRuA==\"",
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYBAAA=",
+          "createdDateTime": "2019-10-31T15:28:48.4968249Z",
+          "lastModifiedDateTime": "2019-10-31T15:28:51.2722544Z",
+          "changeKey": "CeWxBXCX9EGt3ceiDpFKcgABJhyRuA==",
+          "categories": [],
+          "originalStartTimeZone": "GMT Standard Time",
+          "originalEndTimeZone": "GMT Standard Time",
+          "iCalUId": "040000008200E00074C5B7101A82E0080000000000000000000000000000000000000000310000007643616C2D5569640100000033353336454438412D303035462D344243332D383542362D43463646384636393844443700",
+          "reminderMinutesBeforeStart": 60,
+          "isReminderOn": false,
+          "hasAttachments": false,
+          "subject": "Marketing Plans Review",
+          "bodyPreview": "Agenda\n\n1. CPC Campaign Results\n2. New Campaign Ideas\n3. Referral Traffic Report\n4. Editorial Calendar Weblog\n5. Social Media Traffic Analysis\n\nPlease also refer to the Marketing Wiki before the meeting.",
+          "importance": "normal",
+          "sensitivity": "normal",
+          "isAllDay": false,
+          "isCancelled": false,
+          "isOrganizer": false,
+          "responseRequested": true,
+          "seriesMasterId": null,
+          "showAs": "busy",
+          "type": "singleInstance",
+          "webLink": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYBAAA%3D&exvsurl=1&path=/calendar/item",
+          "onlineMeetingUrl": "https://gotomeet.me/adenin-com",
+          "recurrence": null,
+          "responseStatus": {
+            "response": "accepted",
+            "time": "2019-10-31T15:28:00Z"
+          },
+          "body": {
+            "contentType": "html",
+            "content": "<html><head><meta name=\"Generator\" content=\"Microsoft Exchange Server\">\r\n<!-- converted from text -->\r\n<style><!-- .EmailQuote { margin-left: 1pt; padding-left: 4pt; border-left: #800000 2px solid; } --></style></head>\r\n<body>\r\n<font size=\"2\"><span style=\"font-size:11pt;\"><div class=\"PlainText\">Agenda<br>\r\n<br>\r\n1. CPC Campaign Results<br>\r\n2. New Campaign Ideas<br>\r\n3. Referral Traffic Report<br>\r\n4. Editorial Calendar Weblog<br>\r\n5. Social Media Traffic Analysis<br>\r\n<br>\r\nPlease also refer to the Marketing Wiki before the meeting.</div></span></font>\r\n</body>\r\n</html>\r\n"
+          },
+          "start": {
+            "dateTime": "2019-10-31T11:30:00.0000000",
+            "timeZone": "UTC"
+          },
+          "end": {
+            "dateTime": "2019-10-31T12:00:00.0000000",
             "timeZone": "UTC"
           },
           "location": null,
-          "locations": [],
+          "locations": [
+            {
+              "displayName": "https://gotomeet.me/adenin-com",
+              "locationType": "default",
+              "uniqueId": "https://gotomeet.me/adenin-com",
+              "uniqueIdType": "private"
+            }
+          ],
           "attendees": [
+            {
+              "type": "required",
+              "status": {
+                "response": "none",
+                "time": "0001-01-01T00:00:00Z"
+              },
+              "emailAddress": {
+                "name": "Henry Amm",
+                "address": "henry.amm@adenin.com"
+              },
+              "avatarProperties": {
+                "initials": "HA",
+                "color": "green"
+              }
+            },
+            {
+              "type": "required",
+              "status": {
+                "response": "none",
+                "time": "0001-01-01T00:00:00Z"
+              },
+              "emailAddress": {
+                "name": "Martin Amm",
+                "address": "ma@adenin.com"
+              },
+              "avatarProperties": {
+                "initials": "MA",
+                "color": "purple"
+              }
+            },
             {
               "type": "required",
               "status": {
@@ -228,47 +390,48 @@ $meta:
             {
               "type": "required",
               "status": {
-                "response": "accepted",
-                "time": "2019-10-30T14:53:09.2919821Z"
+                "response": "notResponded",
+                "time": "0001-01-01T00:00:00Z"
               },
               "emailAddress": {
-                "name": "Henry Amm",
-                "address": "henry.amm@adenin.com"
+                "name": "Charlotte Cameron",
+                "address": "charlotte.cameron@adenin.com"
               },
               "avatarProperties": {
-                "initials": "HA",
-                "color": "green"
+                "initials": "CC",
+                "color": "pink"
               }
             }
           ],
           "organizer": {
             "emailAddress": {
-              "name": "Oliver McNally",
-              "address": "oliver.mcnally@adenin.com"
+              "name": "Henry Amm",
+              "address": "Henry.Amm@adenin.com"
             },
             "avatarProperties": {
-              "initials": "OM",
-              "color": "orange"
+              "initials": "HA",
+              "color": "green"
             }
           },
-          "date": "2019-10-30T17:00:00.000Z",
+          "date": "2019-10-31T11:30:00Z",
           "duration": "30 min",
-          "showDetails": false
+          "showDetails": false,
+          "hasHappened": true
         },
         {
-          "@odata.etag": "W/\"CeWxBXCX9EGt3ceiDpFKcgABJhxqbA==\"",
-          "id": "AQMkAGVlADA4Y2ViZC04ZmI0LTRhZTgtOGFjMy1lZGM1N2U0NzBiYgBhAEYAAANhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAACAQ0AAAAJ5bEFcJf0Qa3dx6IOkUpyAAACRgAAAQ==",
-          "createdDateTime": "2019-10-29T12:45:27.5737997Z",
-          "lastModifiedDateTime": "2019-10-30T10:37:48.070588Z",
-          "changeKey": "CeWxBXCX9EGt3ceiDpFKcgABJhxqbA==",
+          "@odata.etag": "W/\"CeWxBXCX9EGt3ceiDpFKcgABJhyStQ==\"",
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYDAAA=",
+          "createdDateTime": "2019-10-31T16:25:11.0597993Z",
+          "lastModifiedDateTime": "2019-10-31T16:25:12.6848777Z",
+          "changeKey": "CeWxBXCX9EGt3ceiDpFKcgABJhyStQ==",
           "categories": [],
           "originalStartTimeZone": "GMT Standard Time",
           "originalEndTimeZone": "GMT Standard Time",
-          "iCalUId": "040000008200E00074C5B7101A82E0080000000040C095BC568ED5010000000000000000100000003B8339B1A3376D4997E3ED5AFE6FE8D2",
+          "iCalUId": "040000008200E00074C5B7101A82E00800000000F0D5DAC20790D501000000000000000010000000787D997CB00BFF458ED23883F9F6341C",
           "reminderMinutesBeforeStart": 15,
-          "isReminderOn": false,
+          "isReminderOn": true,
           "hasAttachments": false,
-          "subject": "Test Event 2",
+          "subject": "Test",
           "bodyPreview": "",
           "importance": "normal",
           "sensitivity": "normal",
@@ -279,7 +442,7 @@ $meta:
           "seriesMasterId": null,
           "showAs": "busy",
           "type": "singleInstance",
-          "webLink": "https://outlook.office365.com/owa/?itemid=AQMkAGVlADA4Y2ViZC04ZmI0LTRhZTgtOGFjMy1lZGM1N2U0NzBiYgBhAEYAAANhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAACAQ0AAAAJ5bEFcJf0Qa3dx6IOkUpyAAACRgAAAQ%3D%3D&exvsurl=1&path=/calendar/item",
+          "webLink": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYDAAA%3D&exvsurl=1&path=/calendar/item",
           "onlineMeetingUrl": null,
           "recurrence": null,
           "responseStatus": {
@@ -291,11 +454,11 @@ $meta:
             "content": "<html>\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n<meta content=\"text/html; charset=us-ascii\">\r\n<meta name=\"ProgId\" content=\"Word.Document\">\r\n<meta name=\"Generator\" content=\"Microsoft Word 15\">\r\n<meta name=\"Originator\" content=\"Microsoft Word 15\">\r\n<style>\r\n<!--\r\n@font-face\r\n\t{font-family:\"Cambria Math\"}\r\n@font-face\r\n\t{font-family:Calibri}\r\np.MsoNormal, li.MsoNormal, div.MsoNormal\r\n\t{margin:0cm;\r\n\tmargin-bottom:.0001pt;\r\n\tfont-size:11.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\na:link, span.MsoHyperlink\r\n\t{color:#0563C1;\r\n\ttext-decoration:underline}\r\na:visited, span.MsoHyperlinkFollowed\r\n\t{color:#954F72;\r\n\ttext-decoration:underline}\r\nspan.EmailStyle17\r\n\t{font-family:\"Calibri\",sans-serif;\r\n\tcolor:windowtext}\r\n.MsoChpDefault\r\n\t{font-family:\"Calibri\",sans-serif}\r\n@page WordSection1\r\n\t{margin:72.0pt 72.0pt 72.0pt 72.0pt}\r\ndiv.WordSection1\r\n\t{}\r\n-->\r\n</style>\r\n</head>\r\n<body lang=\"EN-GB\" link=\"#0563C1\" vlink=\"#954F72\" style=\"\">\r\n<div class=\"WordSection1\">\r\n<p class=\"MsoNormal\">&nbsp;</p>\r\n</div>\r\n</body>\r\n</html>\r\n"
           },
           "start": {
-            "dateTime": "2019-10-30T18:00:00.0000000",
+            "dateTime": "2019-10-31T17:00:00.0000000",
             "timeZone": "UTC"
           },
           "end": {
-            "dateTime": "2019-10-30T18:30:00.0000000",
+            "dateTime": "2019-10-31T17:30:00.0000000",
             "timeZone": "UTC"
           },
           "location": null,
@@ -327,13 +490,116 @@ $meta:
               "color": "orange"
             }
           },
-          "date": "2019-10-30T18:00:00.000Z",
+          "date": "2019-10-31T17:00:00Z",
           "duration": "30 min",
+          "showDetails": false
+        },
+        {
+          "@odata.etag": "W/\"CeWxBXCX9EGt3ceiDpFKcgABJhyUdg==\"",
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYEAAA=",
+          "createdDateTime": "2019-10-31T16:34:09.7419235Z",
+          "lastModifiedDateTime": "2019-10-31T16:34:37.1901938Z",
+          "changeKey": "CeWxBXCX9EGt3ceiDpFKcgABJhyUdg==",
+          "categories": [],
+          "originalStartTimeZone": "GMT Standard Time",
+          "originalEndTimeZone": "GMT Standard Time",
+          "iCalUId": "040000008200E00074C5B7101A82E0080000000000000000000000000000000000000000310000007643616C2D5569640100000043303144343636372D453631362D343733342D393935372D36343839384432383039453800",
+          "reminderMinutesBeforeStart": 60,
+          "isReminderOn": true,
+          "hasAttachments": false,
+          "subject": "Canceled: This event will be cancelled",
+          "bodyPreview": "",
+          "importance": "normal",
+          "sensitivity": "normal",
+          "isAllDay": false,
+          "isCancelled": true,
+          "isOrganizer": false,
+          "responseRequested": true,
+          "seriesMasterId": null,
+          "showAs": "free",
+          "type": "singleInstance",
+          "webLink": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYEAAA%3D&exvsurl=1&path=/calendar/item",
+          "onlineMeetingUrl": null,
+          "recurrence": null,
+          "responseStatus": {
+            "response": "accepted",
+            "time": "2019-10-31T16:33:00Z"
+          },
+          "body": {
+            "contentType": "html",
+            "content": "<html><head><meta name=\"Generator\" content=\"Microsoft Exchange Server\">\r\n<!-- converted from text -->\r\n<style><!-- .EmailQuote { margin-left: 1pt; padding-left: 4pt; border-left: #800000 2px solid; } --></style></head>\r\n<body>\r\n<font size=\"2\"><span style=\"font-size:11pt;\"><div class=\"PlainText\">&nbsp;</div></span></font>\r\n</body>\r\n</html>\r\n"
+          },
+          "start": {
+            "dateTime": "2019-10-31T18:00:00.0000000",
+            "timeZone": "UTC"
+          },
+          "end": {
+            "dateTime": "2019-10-31T19:00:00.0000000",
+            "timeZone": "UTC"
+          },
+          "location": {
+            "displayName": "Neverland Ranch\n5225 Figueroa Mountain Rd\nLos Olivos CA 93441\nUnited States",
+            "locationType": "default",
+            "uniqueId": "Neverland Ranch\n5225 Figueroa Mountain Rd\nLos Olivos CA 93441\nUnited States",
+            "uniqueIdType": "private"
+          },
+          "locations": [
+            {
+              "displayName": "Neverland Ranch\n5225 Figueroa Mountain Rd\nLos Olivos CA 93441\nUnited States",
+              "locationType": "default",
+              "uniqueId": "Neverland Ranch\n5225 Figueroa Mountain Rd\nLos Olivos CA 93441\nUnited States",
+              "uniqueIdType": "private"
+            }
+          ],
+          "attendees": [
+            {
+              "type": "required",
+              "status": {
+                "response": "none",
+                "time": "0001-01-01T00:00:00Z"
+              },
+              "emailAddress": {
+                "name": "Henry Amm",
+                "address": "henry.amm@adenin.com"
+              },
+              "avatarProperties": {
+                "initials": "HA",
+                "color": "green"
+              }
+            },
+            {
+              "type": "required",
+              "status": {
+                "response": "none",
+                "time": "0001-01-01T00:00:00Z"
+              },
+              "emailAddress": {
+                "name": "Oliver McNally",
+                "address": "oliver.mcnally@adenin.com"
+              },
+              "avatarProperties": {
+                "initials": "OM",
+                "color": "orange"
+              }
+            }
+          ],
+          "organizer": {
+            "emailAddress": {
+              "name": "Henry Amm",
+              "address": "Henry.Amm@adenin.com"
+            },
+            "avatarProperties": {
+              "initials": "HA",
+              "color": "green"
+            }
+          },
+          "date": "2019-10-31T18:00:00Z",
+          "duration": "1 hour",
           "showDetails": false
         }
       ],
       "_settings": {},
-      "_hash": "99141be99af02eb325c2be94fc35ca2f"
+      "_hash": "4056d5af8cc0eae99d015c6a6d25b569"
     }
   preview-mode: live
   preview-container: event
