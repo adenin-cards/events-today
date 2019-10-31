@@ -29,7 +29,7 @@ properties:
       			You have {{items.length}} {% if items.length == 1 %}event{% else %}events{% endif %} today.
       		</div>
       		{% for item in items %}
-      			<div class="layout-horizontal mllg pl mr pbsm pt {% if forloop.index > 1 %}expanded-only{%endif%}" style="border-left:2px solid #eeeeee;margin-left:36px;padding-left:23px">
+      			<div class="layout-horizontal mllg pl mr pbsm pt {% if forloop.index > 1 %}expanded-only{%endif%}" style="border-left:2px solid #eeeeee;margin-left:33px;padding-left:23px">
       				<div class="layout-flex text-primary">
       					<div class="layout-horizontal layout-center mr">
       						<div class="background-blue" style="border-radius:50%;width:8px;height:8px;position:relative;left:-28px"></div>
@@ -163,9 +163,177 @@ $meta:
   cardId: 26
   preview-data: |-
     {
-      "items": [],
+      "items": [
+        {
+          "@odata.etag": "W/\"CeWxBXCX9EGt3ceiDpFKcgABJhxxrA==\"",
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEX-AAA=",
+          "createdDateTime": "2019-10-29T12:40:11.3496852Z",
+          "lastModifiedDateTime": "2019-10-30T14:53:11.5523853Z",
+          "changeKey": "CeWxBXCX9EGt3ceiDpFKcgABJhxxrA==",
+          "categories": [],
+          "originalStartTimeZone": "GMT Standard Time",
+          "originalEndTimeZone": "GMT Standard Time",
+          "iCalUId": "040000008200E00074C5B7101A82E00800000000309CDCFF558ED5010000000000000000100000000F0FC0192E24C04C88F17D0DC0877FA3",
+          "reminderMinutesBeforeStart": 15,
+          "isReminderOn": false,
+          "hasAttachments": false,
+          "subject": "Test Event Duplicate",
+          "bodyPreview": "Status Transdev\r\nMon, Oct 28, 2019 9:30 AM - 10:30 AM EDT\r\n\r\nPlease join my meeting from your computer, tablet or smartphone.\r\n\r\nhttps://global.gotomeeting.com/join/731110613\r\n\r\n\r\nYou can also dial in using your phone.\r\n(For supported devices, tap a one-t",
+          "importance": "normal",
+          "sensitivity": "normal",
+          "isAllDay": false,
+          "isCancelled": false,
+          "isOrganizer": true,
+          "responseRequested": true,
+          "seriesMasterId": null,
+          "showAs": "busy",
+          "type": "singleInstance",
+          "webLink": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEX%2FAAA%3D&exvsurl=1&path=/calendar/item",
+          "onlineMeetingUrl": "https://global.gotomeeting.com/join/731110613",
+          "recurrence": null,
+          "responseStatus": {
+            "response": "organizer",
+            "time": "0001-01-01T00:00:00Z"
+          },
+          "body": {
+            "contentType": "html",
+            "content": "<html>\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n<meta content=\"text/html; charset=us-ascii\">\r\n<meta name=\"Generator\" content=\"Microsoft Word 15 (filtered medium)\">\r\n<style>\r\n<!--\r\n@font-face\r\n\t{font-family:\"Cambria Math\"}\r\n@font-face\r\n\t{font-family:Calibri}\r\np.MsoNormal, li.MsoNormal, div.MsoNormal\r\n\t{margin:0cm;\r\n\tmargin-bottom:.0001pt;\r\n\tfont-size:11.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\na:link, span.MsoHyperlink\r\n\t{color:#0563C1;\r\n\ttext-decoration:underline}\r\na:visited, span.MsoHyperlinkFollowed\r\n\t{color:#954F72;\r\n\ttext-decoration:underline}\r\np.msonormal0, li.msonormal0, div.msonormal0\r\n\t{margin-right:0cm;\r\n\tmargin-left:0cm;\r\n\tfont-size:11.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\nspan.EmailStyle18\r\n\t{font-family:\"Calibri\",sans-serif;\r\n\tcolor:windowtext}\r\n.MsoChpDefault\r\n\t{font-size:10.0pt}\r\n@page WordSection1\r\n\t{margin:72.0pt 72.0pt 72.0pt 72.0pt}\r\ndiv.WordSection1\r\n\t{}\r\n-->\r\n</style>\r\n</head>\r\n<body lang=\"EN-GB\" link=\"#0563C1\" vlink=\"#954F72\">\r\n<div class=\"WordSection1\">\r\n<p><span lang=\"EN-US\">Status Transdev <br>\r\nMon, Oct 28, 2019 9:30 AM - 10:30 AM EDT </span></p>\r\n<p><span lang=\"EN-US\">Please join my meeting from your computer, tablet or smartphone.\r\n</span></p>\r\n<p><span lang=\"EN-US\"><a href=\"https://global.gotomeeting.com/join/731110613\">https://global.gotomeeting.com/join/731110613</a>\r\n</span></p>\r\n<p class=\"MsoNormal\"><span lang=\"EN-US\">&nbsp;</span></p>\r\n<p><span lang=\"EN-US\">You can also dial in using your phone. <br>\r\n(For supported devices, tap a one-touch number below to join instantly.) </span></p>\r\n<p><span lang=\"EN-US\">United States: &#43;1 (571) 317-3129 <br>\r\n- One-touch: <a href=\"tel:&#43;15713173129,,731110613\">tel:&#43;15713173129,,731110613#</a>\r\n</span></p>\r\n<p><span lang=\"EN-US\">Access Code: 731-110-613 </span></p>\r\n<p class=\"MsoNormal\"><span lang=\"EN-US\">&nbsp;</span></p>\r\n<p><span lang=\"EN-US\">More phone numbers: <br>\r\n(For supported devices, tap a one-touch number below to join instantly.) </span></p>\r\n<p><span lang=\"EN-US\">Germany: &#43;49 692 5736 7317 <br>\r\n- One-touch: <a href=\"tel:&#43;4969257367317,,731110613\">tel:&#43;4969257367317,,731110613#</a>\r\n</span></p>\r\n<p><span lang=\"EN-US\">United Kingdom: &#43;44 330 221 0088 <br>\r\n- One-touch: <a href=\"tel:&#43;443302210088,,731110613\">tel:&#43;443302210088,,731110613#</a>\r\n</span></p>\r\n<p class=\"MsoNormal\"><span lang=\"EN-US\">&nbsp;</span></p>\r\n<p><span lang=\"EN-US\">New to GoToMeeting? Get the app now and be ready when your first meeting starts:\r\n<a href=\"https://global.gotomeeting.com/install/731110613\">https://global.gotomeeting.com/install/731110613</a></span></p>\r\n<p class=\"MsoNormal\"><span style=\"\">&nbsp;</span></p>\r\n</div>\r\n</body>\r\n</html>\r\n"
+          },
+          "start": {
+            "dateTime": "2019-10-30T17:00:00.0000000",
+            "timeZone": "UTC"
+          },
+          "end": {
+            "dateTime": "2019-10-30T17:30:00.0000000",
+            "timeZone": "UTC"
+          },
+          "location": null,
+          "locations": [],
+          "attendees": [
+            {
+              "type": "required",
+              "status": {
+                "response": "none",
+                "time": "0001-01-01T00:00:00Z"
+              },
+              "emailAddress": {
+                "name": "Oliver McNally",
+                "address": "oliver.mcnally@adenin.com"
+              },
+              "avatarProperties": {
+                "initials": "OM",
+                "color": "orange"
+              }
+            },
+            {
+              "type": "required",
+              "status": {
+                "response": "accepted",
+                "time": "2019-10-30T14:53:09.2919821Z"
+              },
+              "emailAddress": {
+                "name": "Henry Amm",
+                "address": "henry.amm@adenin.com"
+              },
+              "avatarProperties": {
+                "initials": "HA",
+                "color": "green"
+              }
+            }
+          ],
+          "organizer": {
+            "emailAddress": {
+              "name": "Oliver McNally",
+              "address": "oliver.mcnally@adenin.com"
+            },
+            "avatarProperties": {
+              "initials": "OM",
+              "color": "orange"
+            }
+          },
+          "date": "2019-10-30T17:00:00.000Z",
+          "duration": "30 min",
+          "showDetails": false
+        },
+        {
+          "@odata.etag": "W/\"CeWxBXCX9EGt3ceiDpFKcgABJhxqbA==\"",
+          "id": "AQMkAGVlADA4Y2ViZC04ZmI0LTRhZTgtOGFjMy1lZGM1N2U0NzBiYgBhAEYAAANhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAACAQ0AAAAJ5bEFcJf0Qa3dx6IOkUpyAAACRgAAAQ==",
+          "createdDateTime": "2019-10-29T12:45:27.5737997Z",
+          "lastModifiedDateTime": "2019-10-30T10:37:48.070588Z",
+          "changeKey": "CeWxBXCX9EGt3ceiDpFKcgABJhxqbA==",
+          "categories": [],
+          "originalStartTimeZone": "GMT Standard Time",
+          "originalEndTimeZone": "GMT Standard Time",
+          "iCalUId": "040000008200E00074C5B7101A82E0080000000040C095BC568ED5010000000000000000100000003B8339B1A3376D4997E3ED5AFE6FE8D2",
+          "reminderMinutesBeforeStart": 15,
+          "isReminderOn": false,
+          "hasAttachments": false,
+          "subject": "Test Event 2",
+          "bodyPreview": "",
+          "importance": "normal",
+          "sensitivity": "normal",
+          "isAllDay": false,
+          "isCancelled": false,
+          "isOrganizer": true,
+          "responseRequested": true,
+          "seriesMasterId": null,
+          "showAs": "busy",
+          "type": "singleInstance",
+          "webLink": "https://outlook.office365.com/owa/?itemid=AQMkAGVlADA4Y2ViZC04ZmI0LTRhZTgtOGFjMy1lZGM1N2U0NzBiYgBhAEYAAANhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAACAQ0AAAAJ5bEFcJf0Qa3dx6IOkUpyAAACRgAAAQ%3D%3D&exvsurl=1&path=/calendar/item",
+          "onlineMeetingUrl": null,
+          "recurrence": null,
+          "responseStatus": {
+            "response": "none",
+            "time": "0001-01-01T00:00:00Z"
+          },
+          "body": {
+            "contentType": "html",
+            "content": "<html>\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n<meta content=\"text/html; charset=us-ascii\">\r\n<meta name=\"ProgId\" content=\"Word.Document\">\r\n<meta name=\"Generator\" content=\"Microsoft Word 15\">\r\n<meta name=\"Originator\" content=\"Microsoft Word 15\">\r\n<style>\r\n<!--\r\n@font-face\r\n\t{font-family:\"Cambria Math\"}\r\n@font-face\r\n\t{font-family:Calibri}\r\np.MsoNormal, li.MsoNormal, div.MsoNormal\r\n\t{margin:0cm;\r\n\tmargin-bottom:.0001pt;\r\n\tfont-size:11.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\na:link, span.MsoHyperlink\r\n\t{color:#0563C1;\r\n\ttext-decoration:underline}\r\na:visited, span.MsoHyperlinkFollowed\r\n\t{color:#954F72;\r\n\ttext-decoration:underline}\r\nspan.EmailStyle17\r\n\t{font-family:\"Calibri\",sans-serif;\r\n\tcolor:windowtext}\r\n.MsoChpDefault\r\n\t{font-family:\"Calibri\",sans-serif}\r\n@page WordSection1\r\n\t{margin:72.0pt 72.0pt 72.0pt 72.0pt}\r\ndiv.WordSection1\r\n\t{}\r\n-->\r\n</style>\r\n</head>\r\n<body lang=\"EN-GB\" link=\"#0563C1\" vlink=\"#954F72\" style=\"\">\r\n<div class=\"WordSection1\">\r\n<p class=\"MsoNormal\">&nbsp;</p>\r\n</div>\r\n</body>\r\n</html>\r\n"
+          },
+          "start": {
+            "dateTime": "2019-10-30T18:00:00.0000000",
+            "timeZone": "UTC"
+          },
+          "end": {
+            "dateTime": "2019-10-30T18:30:00.0000000",
+            "timeZone": "UTC"
+          },
+          "location": null,
+          "locations": [],
+          "attendees": [
+            {
+              "type": "required",
+              "status": {
+                "response": "none",
+                "time": "0001-01-01T00:00:00Z"
+              },
+              "emailAddress": {
+                "name": "Oliver McNally",
+                "address": "oliver.mcnally@adenin.com"
+              },
+              "avatarProperties": {
+                "initials": "OM",
+                "color": "orange"
+              }
+            }
+          ],
+          "organizer": {
+            "emailAddress": {
+              "name": "Oliver McNally",
+              "address": "oliver.mcnally@adenin.com"
+            },
+            "avatarProperties": {
+              "initials": "OM",
+              "color": "orange"
+            }
+          },
+          "date": "2019-10-30T18:00:00.000Z",
+          "duration": "30 min",
+          "showDetails": false
+        }
+      ],
       "_settings": {},
-      "_hash": "08013187d99340ed8d2961cfd3feab68"
+      "_hash": "99141be99af02eb325c2be94fc35ca2f"
     }
   preview-mode: live
   preview-container: event
