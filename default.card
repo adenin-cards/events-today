@@ -99,7 +99,7 @@ properties:
       									{% endif %}
       								</div>
       							{% endif %}
-      							<div class="mb mr pt"><at-carbon-clamp lines="4" text="{{ item.bodyPreview }}"></at-carbon-clamp></div>
+      							<div class="mb mr pt">{{ item.bodyPreview }}</div>
       							{% if item.responseRequested and item.responseStatus.response != "organizer" and item.attendees.length > 1 %}
       								<div class="layout-horizontal layout-center mb">
       									{% if item.responseStatus.response != "accepted" %}
