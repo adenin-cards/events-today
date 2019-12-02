@@ -14,6 +14,7 @@ properties:
       - title: New event
         url: https://outlook.office.com/calendar/deeplink/compose
         icon: now:plus
+    model: 
   content:
     type: element
     xtype: at-core-view
@@ -39,15 +40,18 @@ properties:
       						<div class="{% if item.isCancelled %}background-red{% else %}background-blue{% endif %}" style="border-radius:50%;width:8px;height:8px;position:relative;left:-28px"></div>
       						<at-carbon-moment class="font-caption font-bold {% if item.isCancelled %}red{% else %}blue{% endif %}" datetime="{{ item.date }}" format="LT" style="position:relative;left:-8px" utc></at-carbon-moment>
       					</div>
-      					<div class="font-subhead ptsm" style="{% if item.isCancelled %}text-decoration:line-through{% endif %}">{{ item.subject }}</div>
+      					<div class="font-subhead ptsm" style="{% if item.isCancelled %}text-decoration:line-through{% endif %}">{{ item.title }}</div>
       					<div class="layout-horizontal layout-center ptsm">
-      						{% if item.organizer.photo %}
-      							<iron-image class="mrsm" src="{{ item.organizer.photo }}" style="border-radius:50%;width:32px;height:32px;" sizing="cover" preload></iron-image>
-      						{% elsif item.organizer.avatarProperties %}
+      						{% if item.organizer.avatarProperties %}
       							<div class="events-organizer-avatar text-primary white background-grey mrsm" style="background-color:{{item.organizer.avatarProperties.color}}">{{ item.organizer.avatarProperties.initials }}</div>
       						{% endif %}
       						<div class="layout-horizontal font-body">
-      							<span>{{ item.organizer.emailAddress.name }}</span><span class="mxsm">•</span><span class="grey">{{ item.duration }}</span>
+      							{% if item.organizer.name %}
+      								<span>{{ item.organizer.name }}</span><span class="mxsm">•</span>
+      							{% elsif item.organizer.email %}
+      								<span>{{ item.organizer.email }}</span><span class="mxsm">•</span>
+      							{% endif %}
+      							<span class="grey">{{ item.duration }}</span>
       						</div>
       					</div>
       					<div class="layout-vertical mt mbsm">
@@ -57,10 +61,10 @@ properties:
       							{% endif %}
       							{% if item.showDetails == true %}
       								<div class="layout-horizontal layout-end-justified layout-center mrsm" index="{{ forloop.index}} "at-click-action="post1">
-      									<span>Hide details {{ today }}</span>
+      									<span>Hide details</span>
       									<at-carbon-icon icon="now:caret-up" class="grey ico mlsm"></at-carbon-icon>
       								</div>
-      							{% elsif item.attendees.length > 1 or item.location or item.bodyPreview %}
+      							{% elsif item.attendees.length > 1 or item.location or item.description %}
       								<div class="layout-horizontal layout-end-justified layout-center mrsm" index="{{ forloop.index}}" at-click-action="post1">
       									<span>Show details</span>
       									<at-carbon-icon icon="now:caret-down" class="grey ico mlsm"></at-carbon-icon>
@@ -71,7 +75,7 @@ properties:
       							{% if item.location %}
       								<div class="layout-horizontal layout-center mb">
       									<at-carbon-icon icon="now:marker" class="green mrsm" style="width:16px;height:16px;"></at-carbon-icon>
-      									<at-link href="{{ item.location.link }}" class="blue">{{ item.location.displayName }}</at-link>
+      									<at-link href="{{ item.location.link }}" class="blue">{{ item.location.title }}</at-link>
       								 </div>
       							{% endif %}
       							{% if item.attendees.length > 1 %}
@@ -80,13 +84,10 @@ properties:
       									{% assign overflow = 0 %}
       									{% assign skipCount = true %}
       									{% for attendee in item.attendees %}
-      										{% if attendee.photo and forloop.index < 9 %}
+      										{% if attendee.avatarProperties.initials and forloop.index < 9 %}
       											{% assign skipCount = false %}
-      											<iron-image class="mbsm mrsm" src="{{ attendee.photo }}" style="border-radius:50%;width:32px;height:32px;" sizing="cover" preload></iron-image>
-      										{% elsif attendee.avatarProperties.initials and forloop.index < 9 %}
-      											{% assign skipCount = false %}
-      											{% assign attendeeEmail = attendee.emailAddress.address | downcase %}
-      											{% assign organizerEmail = item.organizer.emailAddress.address | downcase %}
+      											{% assign attendeeEmail = attendee.email | downcase %}
+      											{% assign organizerEmail = item.organizer.email | downcase %}
       											{% if attendeeEmail != organizerEmail %}
       												<div class="events-attendee-avatar text-primary white background-grey mbsm mrsm" style="background-color:{{attendee.avatarProperties.color}}">{{ attendee.avatarProperties.initials }}</div>
       											{% endif %}
@@ -99,20 +100,20 @@ properties:
       									{% endif %}
       								</div>
       							{% endif %}
-      							<div class="mb mr pt"><at-carbon-clamp lines="10" text="{{ item.bodyPreview }}"></at-carbon-clamp></div>
-      							{% if item.responseRequested and item.responseStatus.response != "organizer" and item.attendees.length > 1 %}
+      							<div class="mb mr pt"><at-carbon-clamp lines="10" text="{{ item.description }}"></at-carbon-clamp></div>
+      							{% if item.response and item.response.status != "organizer" and item.attendees.length > 1 %}
       								<div class="layout-horizontal layout-center mb">
-      									{% if item.responseStatus.response != "accepted" %}
+      									{% if item.response.status != "accepted" %}
       										<at-carbon-icon icon="now:cancel" class="red mrsm" style="width:24px;height:24px;"></at-carbon-icon>
       										<span>Not Accepted</span>
       									{% else %}
       										<at-carbon-icon icon="now:checkmark" class="green mrsm" style="width:24px;height:24px;"></at-carbon-icon>
       										<span>Accepted&nbsp;</span>
-      										<at-carbon-moment datetime="{{ item.responseStatus.time }}" format="llll"></at-carbon-moment>
+      										<at-carbon-moment datetime="{{ item.response.date }}" format="llll"></at-carbon-moment>
       									{% endif %}
       								</div>
       							{% endif %}
-      							<at-link href="{{ item.webLink }}" class="blue pt">View Meeting in Calendar</at-link>
+      							<at-link href="{{ item.link }}" class="blue pt">View Meeting in Calendar</at-link>
       						{% endif %}
       					</div>
       				</div>
@@ -157,6 +158,7 @@ properties:
       - _all
     default: 
     modelRoot: state.model
+    value: 
   footer4:
     type: element
     xtype: at-carbon-card-footer
@@ -165,90 +167,134 @@ properties:
     modelBind: 'expandable: items.length>1'
     href: https://outlook.office365.com/calendar
     title: View Calendar
+    model: 
 $meta:
   cardId: 26
   preview-data: |-
     {
+      "_action": "firstpage",
+      "_page": 1,
+      "_pageSize": 20,
       "items": [
         {
-          "@odata.etag": "W/\"CeWxBXCX9EGt3ceiDpFKcgABKYMUJQ==\"",
-          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYDAAA=",
-          "createdDateTime": "2019-10-31T16:25:11.0597993Z",
-          "lastModifiedDateTime": "2019-11-05T16:47:53.1208006Z",
-          "changeKey": "CeWxBXCX9EGt3ceiDpFKcgABKYMUJQ==",
-          "categories": [],
-          "originalStartTimeZone": "GMT Standard Time",
-          "originalEndTimeZone": "GMT Standard Time",
-          "iCalUId": "040000008200E00074C5B7101A82E00800000000F0D5DAC20790D501000000000000000010000000787D997CB00BFF458ED23883F9F6341C",
-          "reminderMinutesBeforeStart": 15,
-          "isReminderOn": false,
-          "hasAttachments": false,
-          "subject": "Test",
-          "bodyPreview": "Agenda\r\n\r\n\r\n\r\n1. CPC Campaign Results\r\n\r\n2. New Campaign Ideas\r\n\r\n3. Referral Traffic Report\r\n\r\n4. Editorial Calendar Weblog\r\n\r\n5. Social Media Traffic Analysis\r\n\r\n\r\n\r\nPlease also refer to the Marketing Wiki before the meeting.",
-          "importance": "normal",
-          "sensitivity": "normal",
-          "isAllDay": false,
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYJAAA=",
+          "title": "Test event",
+          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYJAAA%3D&exvsurl=1&path=/calendar/item",
           "isCancelled": false,
-          "isOrganizer": true,
-          "responseRequested": true,
-          "seriesMasterId": null,
-          "showAs": "busy",
-          "type": "singleInstance",
-          "webLink": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYDAAA%3D&exvsurl=1&path=/calendar/item",
-          "onlineMeetingUrl": null,
-          "recurrence": null,
-          "responseStatus": {
-            "response": "none",
-            "time": "0001-01-01T00:00:00Z"
-          },
-          "body": {
-            "contentType": "html",
-            "content": "<html>\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n<meta content=\"text/html; charset=us-ascii\">\r\n<meta name=\"ProgId\" content=\"Word.Document\">\r\n<meta name=\"Generator\" content=\"Microsoft Word 15\">\r\n<meta name=\"Originator\" content=\"Microsoft Word 15\">\r\n<style>\r\n<!--\r\n@font-face\r\n\t{font-family:\"Cambria Math\"}\r\n@font-face\r\n\t{font-family:Calibri}\r\np.MsoNormal, li.MsoNormal, div.MsoNormal\r\n\t{margin:0cm;\r\n\tmargin-bottom:.0001pt;\r\n\tfont-size:11.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\na:link, span.MsoHyperlink\r\n\t{color:#0563C1;\r\n\ttext-decoration:underline}\r\na:visited, span.MsoHyperlinkFollowed\r\n\t{color:#954F72;\r\n\ttext-decoration:underline}\r\np.MsoPlainText, li.MsoPlainText, div.MsoPlainText\r\n\t{margin:0cm;\r\n\tmargin-bottom:.0001pt;\r\n\tfont-size:11.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\np.msonormal0, li.msonormal0, div.msonormal0\r\n\t{margin-right:0cm;\r\n\tmargin-left:0cm;\r\n\tfont-size:11.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\nspan.EmailStyle18\r\n\t{font-family:\"Calibri\",sans-serif;\r\n\tcolor:windowtext}\r\nspan.PlainTextChar\r\n\t{font-family:\"Calibri\",sans-serif}\r\n.MsoChpDefault\r\n\t{font-size:10.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\n@page WordSection1\r\n\t{margin:72.0pt 72.0pt 72.0pt 72.0pt}\r\ndiv.WordSection1\r\n\t{}\r\n-->\r\n</style>\r\n</head>\r\n<body lang=\"EN-GB\" link=\"#0563C1\" vlink=\"#954F72\" style=\"\">\r\n<div class=\"WordSection1\">\r\n<p class=\"MsoPlainText\">Agenda</p>\r\n<p class=\"MsoPlainText\">&nbsp;</p>\r\n<p class=\"MsoPlainText\">1. CPC Campaign Results</p>\r\n<p class=\"MsoPlainText\">2. New Campaign Ideas</p>\r\n<p class=\"MsoPlainText\">3. Referral Traffic Report</p>\r\n<p class=\"MsoPlainText\">4. Editorial Calendar Weblog</p>\r\n<p class=\"MsoPlainText\">5. Social Media Traffic Analysis</p>\r\n<p class=\"MsoPlainText\">&nbsp;</p>\r\n<p class=\"MsoPlainText\">Please also refer to the Marketing Wiki before the meeting.</p>\r\n<p class=\"MsoNormal\">&nbsp;</p>\r\n</div>\r\n</body>\r\n</html>\r\n"
-          },
-          "start": {
-            "dateTime": "2019-11-05T17:00:00.0000000",
-            "timeZone": "UTC"
-          },
-          "end": {
-            "dateTime": "2019-11-05T17:30:00.0000000",
-            "timeZone": "UTC"
-          },
-          "location": null,
-          "locations": [],
-          "attendees": [
-            {
-              "type": "required",
-              "status": {
-                "response": "none",
-                "time": "0001-01-01T00:00:00Z"
-              },
+          "raw": {
+            "@odata.etag": "W/\"CeWxBXCX9EGt3ceiDpFKcgABOgvHEg==\"",
+            "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYJAAA=",
+            "createdDateTime": "2019-12-02T16:01:13.7911411Z",
+            "lastModifiedDateTime": "2019-12-02T16:01:15.2543134Z",
+            "changeKey": "CeWxBXCX9EGt3ceiDpFKcgABOgvHEg==",
+            "categories": [],
+            "originalStartTimeZone": "GMT Standard Time",
+            "originalEndTimeZone": "GMT Standard Time",
+            "iCalUId": "040000008200E00074C5B7101A82E00800000000007A54AF29A9D5010000000000000000100000001E0E573B502D03498424871B3E19A98C",
+            "reminderMinutesBeforeStart": 15,
+            "isReminderOn": false,
+            "hasAttachments": false,
+            "subject": "Test event",
+            "bodyPreview": "Lorem ipsum",
+            "importance": "normal",
+            "sensitivity": "normal",
+            "isAllDay": false,
+            "isCancelled": false,
+            "isOrganizer": true,
+            "responseRequested": true,
+            "seriesMasterId": null,
+            "showAs": "busy",
+            "type": "singleInstance",
+            "webLink": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYJAAA%3D&exvsurl=1&path=/calendar/item",
+            "onlineMeetingUrl": null,
+            "recurrence": null,
+            "responseStatus": {
+              "response": "none",
+              "time": "0001-01-01T00:00:00Z"
+            },
+            "body": {
+              "contentType": "html",
+              "content": "<html>\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n<meta content=\"text/html; charset=us-ascii\">\r\n<meta name=\"ProgId\" content=\"Word.Document\">\r\n<meta name=\"Generator\" content=\"Microsoft Word 15\">\r\n<meta name=\"Originator\" content=\"Microsoft Word 15\">\r\n<style>\r\n<!--\r\n@font-face\r\n\t{font-family:\"Cambria Math\"}\r\n@font-face\r\n\t{font-family:Calibri}\r\np.MsoNormal, li.MsoNormal, div.MsoNormal\r\n\t{margin:0cm;\r\n\tmargin-bottom:.0001pt;\r\n\tfont-size:11.0pt;\r\n\tfont-family:\"Calibri\",sans-serif}\r\na:link, span.MsoHyperlink\r\n\t{color:#0563C1;\r\n\ttext-decoration:underline}\r\na:visited, span.MsoHyperlinkFollowed\r\n\t{color:#954F72;\r\n\ttext-decoration:underline}\r\nspan.EmailStyle17\r\n\t{font-family:\"Calibri\",sans-serif;\r\n\tcolor:windowtext}\r\n.MsoChpDefault\r\n\t{font-family:\"Calibri\",sans-serif}\r\n@page WordSection1\r\n\t{margin:72.0pt 72.0pt 72.0pt 72.0pt}\r\ndiv.WordSection1\r\n\t{}\r\n-->\r\n</style>\r\n</head>\r\n<body lang=\"EN-GB\" link=\"#0563C1\" vlink=\"#954F72\" style=\"\">\r\n<div class=\"WordSection1\">\r\n<p class=\"MsoNormal\">Lorem ipsum</p>\r\n</div>\r\n</body>\r\n</html>\r\n"
+            },
+            "start": {
+              "dateTime": "2019-12-02T17:00:00.0000000",
+              "timeZone": "UTC"
+            },
+            "end": {
+              "dateTime": "2019-12-02T17:30:00.0000000",
+              "timeZone": "UTC"
+            },
+            "location": {
+              "displayName": "http://duckduckgo.com",
+              "locationType": "default",
+              "uniqueId": "http://duckduckgo.com",
+              "uniqueIdType": "private"
+            },
+            "locations": [
+              {
+                "displayName": "http://duckduckgo.com",
+                "locationType": "default",
+                "uniqueId": "http://duckduckgo.com",
+                "uniqueIdType": "private"
+              }
+            ],
+            "attendees": [
+              {
+                "type": "required",
+                "status": {
+                  "response": "none",
+                  "time": "0001-01-01T00:00:00Z"
+                },
+                "emailAddress": {
+                  "name": "Oliver McNally",
+                  "address": "oliver.mcnally@adenin.com"
+                }
+              }
+            ],
+            "organizer": {
               "emailAddress": {
                 "name": "Oliver McNally",
                 "address": "oliver.mcnally@adenin.com"
-              },
+              }
+            }
+          },
+          "description": "Lorem ipsum",
+          "date": "2019-12-02T17:00:00Z",
+          "duration": "30 minutes",
+          "onlineMeetingUrl": "http://duckduckgo.com",
+          "location": null,
+          "organizer": {
+            "avatarProperties": {
+              "initials": "OM",
+              "color": "orange"
+            },
+            "email": "oliver.mcnally@adenin.com",
+            "name": "Oliver McNally"
+          },
+          "attendees": [
+            {
+              "email": "oliver.mcnally@adenin.com",
+              "name": "Oliver McNally",
               "avatarProperties": {
                 "initials": "OM",
                 "color": "orange"
               }
             }
           ],
-          "organizer": {
-            "emailAddress": {
-              "name": "Oliver McNally",
-              "address": "oliver.mcnally@adenin.com"
-            },
-            "avatarProperties": {
-              "initials": "OM",
-              "color": "orange"
-            }
-          },
-          "date": "2019-11-05T17:00:00Z",
-          "duration": "30 min",
           "showDetails": false
         }
       ],
+      "title": "Events Today",
+      "link": "https://outlook.office365.com/mail/inbox",
+      "linkLabel": "All events",
+      "thumbnail": "https://www.adenin.com/assets/images/wp-images/logo/office-365.svg",
+      "actionable": true,
+      "value": 1,
+      "date": "2019-12-02T17:00:00Z",
+      "description": "You have 1 event today.",
+      "briefing": "You have 1 event today. The next is 'Test event' in an hour",
       "_settings": {},
-      "_hash": "d25aadf0d9d0d27cc63ef09eda0949ff"
+      "_hash": "c2e63f8447390add8da4e5b5bc9a7284"
     }
   preview-mode: live
   preview-container: event

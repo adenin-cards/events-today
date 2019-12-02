@@ -1,6 +1,6 @@
 {
   "name": "outlook-events",
-  "version": "0.0.1.263",
+  "version": "0.0.1.267",
   "private": true,
   "dependencies": {
     "polymer": "Polymer/polymer#master"
