@@ -42,8 +42,8 @@ properties:
       					</div>
       					<div class="font-subhead ptsm" style="{% if item.isCancelled %}text-decoration:line-through{% endif %}">{{ item.title }}</div>
       					<div class="layout-horizontal layout-center ptsm">
-      						{% if item.organizer.avatarProperties %}
-      							<div class="events-organizer-avatar text-primary white background-grey mrsm" style="background-color:{{item.organizer.avatarProperties.color}}">{{ item.organizer.avatarProperties.initials }}</div>
+      						{% if item.organizer.avatar %}
+      							<iron-image src="{{ item.organizer.avatar }}" sizing="cover" preload class="events-organizer-avatar mrsm"></iron-image>
       						{% endif %}
       						<div class="layout-horizontal font-body">
       							{% if item.organizer.name %}
@@ -84,12 +84,12 @@ properties:
       									{% assign overflow = 0 %}
       									{% assign skipCount = true %}
       									{% for attendee in item.attendees %}
-      										{% if attendee.avatarProperties.initials and forloop.index < 9 %}
+      										{% if attendee.avatar and forloop.index < 9 %}
       											{% assign skipCount = false %}
       											{% assign attendeeEmail = attendee.email | downcase %}
       											{% assign organizerEmail = item.organizer.email | downcase %}
       											{% if attendeeEmail != organizerEmail %}
-      												<div class="events-attendee-avatar text-primary white background-grey mbsm mrsm" style="background-color:{{attendee.avatarProperties.color}}">{{ attendee.avatarProperties.initials }}</div>
+      												<iron-image src="{{attendee.avatar}}" sizing="cover" preload class="events-attendee-avatar text-primary mbsm mrsm"></iron-image>
       											{% endif %}
       										{% else %}
       											{% assign overflow = overflow | plus: 1 %}
@@ -169,7 +169,7 @@ properties:
     title: View Calendar
     model: 
 $meta:
-  cardId: 26
+  cardId: 10
   preview-data: |-
     {
       "_action": "firstpage",
