@@ -1,0 +1,77 @@
+properties:
+  view1:
+    type: element
+    title: Liquid View 1
+    xtype: at-core-view
+    model: 
+    value: 
+    view: |-
+      <div class="layout-vertical m">
+      	<div class="layout-horizontal font-subhead">
+        	<at-carbon-moment format="dddd"></at-carbon-moment>,<at-carbon-moment class="mlsm" format="LL"></at-carbon-moment>
+        </div>
+        <div class="layout-horizontal font-subhead">
+        	<at-carbon-moment format="LT" datetime="{{active.date}}"></at-carbon-moment>&nbsp;-&nbsp;<at-carbon-moment class="mlsm" format="LT" datetime="{{active.endDate}}"></at-carbon-moment>
+        </div>
+      </div>
+    modelRoot: state.model
+rules: []
+$meta:
+  cardId: 26
+  preview-mode: live
+  preview-container: event
+  xclass: null
+  xstyle: null
+  code: |-
+    action.initialize = function (evt) {
+      evt.model.active = evt.model.items[evt.model._attrs.index];
+    }
+  preview-data: |-
+    {
+      "thumbnail": "https://www.adenin.com/assets/images/wp-images/logo/office-365.svg",
+      "_action": "firstpage",
+      "_page": 1,
+      "_pageSize": 20,
+      "items": [
+        {
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYNAAA=",
+          "title": "Test Event",
+          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYNAAA%3D&exvsurl=1&path=/calendar/item",
+          "isCancelled": false,
+          "isRecurring": false,
+          "description": "Lorem ipsum dolor sit amet",
+          "date": "2020-01-20T17:00:00Z",
+          "endDate": "2020-01-20T17:30:00Z",
+          "duration": "30 minutes",
+          "onlineMeetingUrl": "https://google.com",
+          "location": null,
+          "thumbnail": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+          "imageIsAvatar": true,
+          "organizer": {
+            "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+            "email": "oliver.mcnally@adenin.com",
+            "name": "Oliver McNally"
+          },
+          "attendees": [
+            {
+              "email": "oliver.mcnally@adenin.com",
+              "name": "Oliver McNally",
+              "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+              "response": "organizer"
+            }
+          ],
+          "showDetails": false
+        }
+      ],
+      "_hash": "abf5fdc6d675f41ca7dc1da8dc90252f",
+      "title": "Events Today",
+      "link": "https://outlook.office365.com/mail/inbox",
+      "linkLabel": "All events",
+      "actionable": true,
+      "value": 1,
+      "date": "2020-01-20T17:00:00Z",
+      "description": "You have 1 event today.",
+      "briefing": "You have 1 event today. The next is 'Test Event' in 10 minutes",
+      "_settings": {}
+    }
+$type: card
