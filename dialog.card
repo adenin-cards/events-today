@@ -24,8 +24,8 @@ properties:
       		</div>
       		{% if active._showLink %}
       			<div class="layout-horizontal layout-justified psm">
-      				<at-carbon-clamp lines="1" text="{{active.onlineMeetingUrl}}"></at-carbon-clamp>
-      				<div class="blue events-modal-copy-btn">Copy</div>
+      				<input id="events-modal-copy-btn" style="border:none!important" value="{{active.onlineMeetingUrl}}" readonly />
+      				<div class="blue events-modal-copy-btn" at-click-action="copyLink">Copy</div>
       			</div>
       		{% endif %}
         {% endif %}
@@ -107,6 +107,15 @@ $meta:
 
     action.toggleAttendees = function (evt) {
     	evt.model.active._showAttendees = !evt.model.active._showAttendees;
+    }
+
+    action.copyLink = function (evt) {
+    	var url = document.getElementById("events-modal-copy-btn");
+
+    	url.select();
+    	url.setSelectionRange(0, 99999);
+
+    	document.execCommand("copy");
     }
   preview-data: |-
     {

@@ -117,6 +117,10 @@ properties:
       .events-modal-toggle:hover {
         cursor: pointer;
       }
+        
+      .events-modal-copy-btn:hover {
+        cursor: pointer;
+      }
       </style>
     xgridcols: 12
     xstyle: 
