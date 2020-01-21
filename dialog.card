@@ -5,14 +5,84 @@ properties:
     xtype: at-core-view
     model: 
     value: 
-    view: |-
+    view: |
       <div class="layout-vertical m">
-      	<div class="layout-horizontal font-subhead">
+      	<div class="layout-horizontal font-subhead pxsm">
         	<at-carbon-moment format="dddd"></at-carbon-moment>,<at-carbon-moment class="mlsm" format="LL"></at-carbon-moment>
         </div>
-        <div class="layout-horizontal font-subhead">
-        	<at-carbon-moment format="LT" datetime="{{active.date}}"></at-carbon-moment>&nbsp;-&nbsp;<at-carbon-moment class="mlsm" format="LT" datetime="{{active.endDate}}"></at-carbon-moment>
+        <div class="layout-horizontal font-subhead mbsm pxsm">
+        	<at-carbon-moment format="LT" datetime="{{active.date}}"></at-carbon-moment>&nbsp;-&nbsp;<at-carbon-moment format="LT" datetime="{{active.endDate}}"></at-carbon-moment>
         </div>
+        {% if active.onlineMeetingUrl %}
+        	<div class="layout-horizontal layout-justified layout-center psm bb events-modal-toggle" at-click-action="toggleLink">
+        		<div class="font-caption grey">Meeting link</div>
+      			{% if active._showLink %}
+      				<at-carbon-icon icon="now:caret-up" class="grey events-ico mlsm"></at-carbon-icon>
+      			{% else %}
+      				<at-carbon-icon icon="now:caret-down" class="grey events-ico mlsm"></at-carbon-icon>
+      			{% endif %}
+      		</div>
+      		{% if active._showLink %}
+      			<div class="layout-horizontal layout-justified psm">
+      				<at-carbon-clamp lines="1" text="{{active.onlineMeetingUrl}}"></at-carbon-clamp>
+      				<div class="blue events-modal-copy-btn">Copy</div>
+      			</div>
+      		{% endif %}
+        {% endif %}
+      	{% if active.description %}
+      		<div class="layout-horizontal layout-justified layout-center psm bb events-modal-toggle mtsm" at-click-action="toggleDescription">
+      			<div class="font-caption grey">Meeting description</div>
+      			{% if active._showDescription %}
+      				<at-carbon-icon icon="now:caret-up" class="grey events-ico mlsm"></at-carbon-icon>
+      			{% else %}
+      				<at-carbon-icon icon="now:caret-down" class="grey events-ico mlsm"></at-carbon-icon>
+      			{% endif %}
+      		</div>
+      		{% if active._showDescription %}
+      			<div class="layout-horizontal layout-justified psm">
+      				<at-carbon-clamp lines="5" text="{{active.description}}"></at-carbon-clamp>
+      			</div>
+      		{% endif %}
+      	{% endif %}
+      	{% if active.attendees.length > 0 %}
+      		<div class="layout-horizontal layout-justified layout-center psm bb events-modal-toggle mtsm" at-click-action="toggleAttendees">
+      			<div class="font-caption grey">People ({{ active.attendees.length }})</div>
+      			{% if active._showAttendees %}
+      				<at-carbon-icon icon="now:caret-up" class="grey events-ico mlsm"></at-carbon-icon>
+      			{% else %}
+      				<at-carbon-icon icon="now:caret-down" class="grey events-ico mlsm"></at-carbon-icon>
+      			{% endif %}
+      		</div>
+      		{% if active._showAttendees %}
+      			{% for attendee in active.attendees %}
+      				<div class="layout-horizontal layout-center pt">
+      					{% if attendee.avatar %}
+      						<iron-image src="{{ attendee.avatar }}" sizing="cover" preload class="events-attendee-avatar mrsm"></iron-image>
+      					{% endif %}
+      					<div class="layout-vertical font-body">
+      						<div class="font-body">
+      							{% if attendee.name %}
+      								{{ attendee.name }}
+      							{% elsif attendee.email %}
+      								{{ attendee.email }}
+      							{% endif %}
+      						</div>
+      						<div class="font-caption grey">
+      							{% if attendee.response == "organizer" %}
+      								Organizer
+      							{% elsif attendee.response == "accepted" %}
+      								Accepted
+      							{% elsif attendee.response == "declined" %}
+      								Declined
+      							{% else %}
+      								Waiting for response
+      							{% endif %}
+      						</div>
+      					</div>
+      				</div>
+      			{% endfor %}
+      		{% endif %}
+      	{% endif %}
       </div>
     modelRoot: state.model
 rules: []
@@ -24,7 +94,19 @@ $meta:
   xstyle: null
   code: |-
     action.initialize = function (evt) {
-      evt.model.active = evt.model.items[evt.model._attrs.index];
+      evt.model.active = evt.model.items[evt.model._attrs.index - 1];
+    }
+
+    action.toggleLink = function (evt) {
+    	evt.model.active._showLink = !evt.model.active._showLink;
+    }
+
+    action.toggleDescription = function (evt) {
+    	evt.model.active._showDescription = !evt.model.active._showDescription;
+    }
+
+    action.toggleAttendees = function (evt) {
+    	evt.model.active._showAttendees = !evt.model.active._showAttendees;
     }
   preview-data: |-
     {
@@ -40,8 +122,8 @@ $meta:
           "isCancelled": false,
           "isRecurring": false,
           "description": "Lorem ipsum dolor sit amet",
-          "date": "2020-01-20T17:00:00Z",
-          "endDate": "2020-01-20T17:30:00Z",
+          "date": "2020-01-21T17:00:00Z",
+          "endDate": "2020-01-21T17:30:00Z",
           "duration": "30 minutes",
           "onlineMeetingUrl": "https://google.com",
           "location": null,
@@ -63,15 +145,15 @@ $meta:
           "showDetails": false
         }
       ],
-      "_hash": "abf5fdc6d675f41ca7dc1da8dc90252f",
+      "_hash": "ffdb10302fbdcf8f1770f90371e2f555",
       "title": "Events Today",
       "link": "https://outlook.office365.com/mail/inbox",
       "linkLabel": "All events",
       "actionable": true,
       "value": 1,
-      "date": "2020-01-20T17:00:00Z",
+      "date": "2020-01-21T17:00:00Z",
       "description": "You have 1 event today.",
-      "briefing": "You have 1 event today. The next is 'Test Event' in 10 minutes",
+      "briefing": "You have 1 event today. The next is 'Test Event' in 6 hours",
       "_settings": {}
     }
 $type: card

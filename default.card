@@ -21,16 +21,17 @@ properties:
     model: 
     view: |-
       <div class="layout-vertical">
-      	<div class="layout-horizontal pl pbsm">
-      		<span class="font-headline layout-center-aligned">It's <at-carbon-moment format="dddd"></at-carbon-moment>,</span><at-carbon-moment class="font-title mlsm" format="LL" style="padding-top:6px"></at-carbon-moment>
+      	<div class="layout-horizontal pl pb bb">
+      		<span class="font-headline layout-center-aligned"><at-carbon-moment class="green mrsm" format="LT"></at-carbon-moment><at-carbon-moment format="dddd"></at-carbon-moment>,<at-carbon-moment class="mlsm" format="LL"></at-carbon-moment></span>
       	</div>
       	{% if items.length < 1 %}
-      		<div class="layout-vertical layout-center-center pblg ptsm">
-      			<iron-image src="{{ '/events-today/icons8-sunbathe.svg' | component_url }}" preload sizing="contain" style="width:120px;height:90px"></iron-image>
-      			<div class="font-subhead">You have no events today</div>
+      		<div class="layout-vertical layout-center-center pblg pt">
+      			<div class="font-headline green">You have no events today</div>
+      			<div class="font-subhead ptsm px mx" style="text-align:center">You can go to Outlook to view your calendar, schedule events, etc.</div>
+      			<at-carbon-button class="events-join-btn mt" button-type="contained" button-color="grey" href="{{ link }}">Go to Outlook</at-carbon-button>
       		</div>
       	{% else %}
-      		<div class="font-subhead pl pb">
+      		<div class="font-subhead pl py">
       			You have {{items.length}} {% if items.length == 1 %}event{% else %}events{% endif %} today.
       		</div>
       		{% for item in items %}
@@ -57,10 +58,10 @@ properties:
       					<div class="layout-vertical mt mbsm">
       						<div class="layout-horizontal layout-center">
       							{% if item.onlineMeetingUrl %}
-      								<at-carbon-button button-type="contained" button-color="green" href="{{ item.onlineMeetingUrl }}">Join meeting</at-carbon-button>
+      								<at-carbon-button class="events-join-btn" button-type="contained" button-color="green" href="{{ item.onlineMeetingUrl }}">Join meeting</at-carbon-button>
       							{% endif %}
       							{% if item.attendees.length > 1 or item.location or item.description %}
-      								<span class="mxsm blue events-detail-btn" index="{{ forloop.index}}" tap-event="dialog" dialog-title="{{item.title}}">Details</span>
+      								<span class="mxsm blue events-detail-btn" index="{{forloop.index}}" at-click-action="dialog" dialog-title="{{item.title}}">Details</span>
       							{% endif %}
       						</div>
       					</div>
@@ -72,9 +73,19 @@ properties:
       </div>
 
       <style>
-      .ico {
+      .events-ico {
        	width: 12px;
         height: 12px;
+      }
+        
+      .events-join-btn {
+        border-radius: 25px;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .events-join-btn .button-label {
+        font-weight: 400;
       }
 
       .events-detail-btn:hover {
@@ -102,6 +113,10 @@ properties:
       	vertical-align: middle;
       	line-height: 28px;
       }
+        
+      .events-modal-toggle:hover {
+        cursor: pointer;
+      }
       </style>
     xgridcols: 12
     xstyle: 
@@ -128,72 +143,13 @@ $meta:
       "_action": "firstpage",
       "_page": 1,
       "_pageSize": 20,
-      "items": [
-        {
-          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYOAAA=",
-          "title": "Test Past event",
-          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYOAAA%3D&exvsurl=1&path=/calendar/item",
-          "isCancelled": false,
-          "isRecurring": false,
-          "description": "",
-          "date": "2020-01-20T15:00:00Z",
-          "duration": "30 minutes",
-          "location": null,
-          "thumbnail": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
-          "imageIsAvatar": true,
-          "organizer": {
-            "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
-            "email": "oliver.mcnally@adenin.com",
-            "name": "Oliver McNally"
-          },
-          "attendees": [
-            {
-              "email": "oliver.mcnally@adenin.com",
-              "name": "Oliver McNally",
-              "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
-              "response": "organizer"
-            }
-          ],
-          "showDetails": false
-        },
-        {
-          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYNAAA=",
-          "title": "Test Event",
-          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYNAAA%3D&exvsurl=1&path=/calendar/item",
-          "isCancelled": false,
-          "isRecurring": false,
-          "description": "Lorem ipsum dolor sit amet",
-          "date": "2020-01-20T17:00:00Z",
-          "duration": "30 minutes",
-          "onlineMeetingUrl": "https://google.com",
-          "location": null,
-          "thumbnail": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
-          "imageIsAvatar": true,
-          "organizer": {
-            "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
-            "email": "oliver.mcnally@adenin.com",
-            "name": "Oliver McNally"
-          },
-          "attendees": [
-            {
-              "email": "oliver.mcnally@adenin.com",
-              "name": "Oliver McNally",
-              "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
-              "response": "organizer"
-            }
-          ],
-          "showDetails": false
-        }
-      ],
-      "_hash": "220d916770756f49108880e92145de36",
+      "items": [],
+      "_hash": "c094df23818af3cb3a22b1404dbe90a8",
       "title": "Events Today",
       "link": "https://outlook.office365.com/mail/inbox",
       "linkLabel": "All events",
-      "actionable": true,
-      "value": 2,
-      "date": "2020-01-20T17:00:00Z",
-      "description": "You have 2 events today.",
-      "briefing": "You have 2 events today. The next is 'Test Event' in 37 minutes",
+      "actionable": false,
+      "description": "You have no events today.",
       "_settings": {}
     }
   preview-mode: live
