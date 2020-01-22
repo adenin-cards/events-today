@@ -24,7 +24,7 @@ properties:
       		</div>
       		{% if active._showLink %}
       			<div class="layout-horizontal layout-justified psm">
-      				<input id="events-modal-copy-btn" style="border:none!important" value="{{active.onlineMeetingUrl}}" readonly />
+      				<input id="events-modal-copy-btn" style="border:none!important;outline:none!important" value="{{active.onlineMeetingUrl}}" readonly />
       				<div class="blue events-modal-copy-btn" at-click-action="copyLink">Copy</div>
       			</div>
       		{% endif %}
