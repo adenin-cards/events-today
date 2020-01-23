@@ -135,7 +135,7 @@ properties:
     xtype: at-carbon-card-footer
     xgridcols: 12
     expandable: !!bool true
-    modelBind: 'expandable: items.length>1'
+    modelBind: 'expandable: items.length>1, hide: items.length == 0'
     href: https://outlook.office365.com/calendar
     title: View Calendar
     model: 

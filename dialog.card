@@ -10,16 +10,19 @@ properties:
       	<div class="layout-horizontal font-subhead pxsm">
         	<at-carbon-moment format="dddd"></at-carbon-moment>,<at-carbon-moment class="mlsm" format="LL"></at-carbon-moment>
         </div>
-        <div class="layout-horizontal font-subhead mbsm pxsm">
+        <div class="layout-horizontal font-subhead pxsm">
         	<at-carbon-moment format="LT" datetime="{{active.date}}"></at-carbon-moment>&nbsp;-&nbsp;<at-carbon-moment format="LT" datetime="{{active.endDate}}"></at-carbon-moment>
         </div>
+        {% if active.location %}
+        	<div class="layout-horizontal font-caption grey mbsm pxsm">{{ active.location.title }}</div>
+        {% endif %}
         {% if active.onlineMeetingUrl %}
         	<div class="layout-horizontal layout-justified layout-center psm bb events-modal-toggle" at-click-action="toggleLink">
         		<div class="font-caption grey">Meeting link</div>
       			{% if active._showLink %}
-      				<at-carbon-icon icon="now:caret-up" class="grey events-ico mlsm"></at-carbon-icon>
+      				<at-carbon-icon icon="now:caret-up" class="events-ico mlsm"></at-carbon-icon>
       			{% else %}
-      				<at-carbon-icon icon="now:caret-down" class="grey events-ico mlsm"></at-carbon-icon>
+      				<at-carbon-icon icon="now:caret-down" class="events-ico mlsm"></at-carbon-icon>
       			{% endif %}
       		</div>
       		{% if active._showLink %}
@@ -33,9 +36,9 @@ properties:
       		<div class="layout-horizontal layout-justified layout-center psm bb events-modal-toggle mtsm" at-click-action="toggleDescription">
       			<div class="font-caption grey">Meeting description</div>
       			{% if active._showDescription %}
-      				<at-carbon-icon icon="now:caret-up" class="grey events-ico mlsm"></at-carbon-icon>
+      				<at-carbon-icon icon="now:caret-up" class="events-ico mlsm"></at-carbon-icon>
       			{% else %}
-      				<at-carbon-icon icon="now:caret-down" class="grey events-ico mlsm"></at-carbon-icon>
+      				<at-carbon-icon icon="now:caret-down" class="events-ico mlsm"></at-carbon-icon>
       			{% endif %}
       		</div>
       		{% if active._showDescription %}
@@ -48,9 +51,9 @@ properties:
       		<div class="layout-horizontal layout-justified layout-center psm bb events-modal-toggle mtsm" at-click-action="toggleAttendees">
       			<div class="font-caption grey">People ({{ active.attendees.length }})</div>
       			{% if active._showAttendees %}
-      				<at-carbon-icon icon="now:caret-up" class="grey events-ico mlsm"></at-carbon-icon>
+      				<at-carbon-icon icon="now:caret-up" class="events-ico mlsm"></at-carbon-icon>
       			{% else %}
-      				<at-carbon-icon icon="now:caret-down" class="grey events-ico mlsm"></at-carbon-icon>
+      				<at-carbon-icon icon="now:caret-down" class="events-ico mlsm"></at-carbon-icon>
       			{% endif %}
       		</div>
       		{% if active._showAttendees %}
@@ -95,6 +98,7 @@ $meta:
   code: |-
     action.initialize = function (evt) {
       evt.model.active = evt.model.items[evt.model._attrs.index - 1];
+      evt.model.active._showAttendees = true;
     }
 
     action.toggleLink = function (evt) {
