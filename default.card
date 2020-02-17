@@ -59,10 +59,10 @@ properties:
       					<div class="layout-vertical mt mbsm">
       						<div class="layout-horizontal layout-center">
       							{% if item.onlineMeetingUrl %}
-      								<at-carbon-button class="events-join-btn" button-type="contained" button-color="green" href="{{ item.onlineMeetingUrl }}">Join meeting</at-carbon-button>
+      								<at-carbon-button class="events-join-btn ml0 mr" button-type="contained" button-color="green" href="{{ item.onlineMeetingUrl }}">Join meeting</at-carbon-button>
       							{% endif %}
       							{% if item.attendees.length > 1 or item.location or item.description %}
-      								<span class="mxsm blue events-detail-btn" index="{{forloop.index}}" at-click-action="dialog" dialog-title="{{item.title}}">Details</span>
+      								<span class="mrsm blue events-detail-btn" index="{{forloop.index}}" at-click-action="dialog" dialog-title="{{item.title}}">Details</span>
       							{% endif %}
       						</div>
       					</div>
