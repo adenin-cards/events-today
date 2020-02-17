@@ -35,11 +35,12 @@ properties:
       			You have {{items.length}} {% if items.length == 1 %}event{% else %}events{% endif %} today.
       		</div>
       		{% for item in items %}
-      			<div class="layout-horizontal mllg pl mr pbsm pt {% if forloop.index > 1 %}expanded-only{%endif%}" style="border-left:2px solid #eeeeee;margin-left:33px;padding-left:23px">
+      			{% assign futureIndex = forloop.index | minus: pastCount %}
+      			<div class="layout-horizontal mllg pl mr pbsm pt {% if futureIndex > 1 %}expanded-only{%endif%}" style="border-left:2px solid #eeeeee;margin-left:33px;padding-left:23px">
       				<div class="layout-flex text-primary">
       					<div class="layout-horizontal layout-center mr">
-      						<div class="{% if item.isCancelled %}background-red{% else %}background-blue{% endif %}" style="border-radius:50%;width:8px;height:8px;position:relative;left:-28px"></div>
-      						<at-carbon-moment class="font-caption font-bold {% if item.isCancelled %}red{% else %}blue{% endif %}" datetime="{{ item.date }}" format="LT" style="position:relative;left:-8px"></at-carbon-moment>
+      						<div class="{% if item.isCancelled %}background-red{% elsif item.isPast %}background-grey{% else %}background-blue{% endif %}" style="border-radius:50%;width:8px;height:8px;position:relative;left:-28px"></div>
+      						<at-carbon-moment class="font-caption font-bold {% if item.isCancelled %}red{% elsif item.isPast %}grey{% else %}blue{% endif %}" datetime="{{ item.date }}" format="LT" style="position:relative;left:-8px"></at-carbon-moment>
       					</div>
       					<div class="font-subhead ptsm" style="{% if item.isCancelled %}text-decoration:line-through{% endif %}">{{ item.title }}</div>
       					<div class="layout-horizontal layout-center ptsm">
@@ -147,14 +148,74 @@ $meta:
       "_action": "firstpage",
       "_page": 1,
       "_pageSize": 20,
-      "items": [],
-      "_hash": "124f72b80e44e2d16adb924ea104ff6c",
+      "items": [
+        {
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYSAAA=",
+          "title": "Test Past",
+          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYSAAA%3D&exvsurl=1&path=/calendar/item",
+          "isCancelled": false,
+          "isRecurring": false,
+          "description": "",
+          "date": "2020-02-17T08:00:00Z",
+          "endDate": "2020-02-17T11:30:00Z",
+          "duration": "4 hours",
+          "location": null,
+          "thumbnail": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+          "imageIsAvatar": true,
+          "organizer": {
+            "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+            "email": "oliver.mcnally@adenin.com",
+            "name": "Oliver McNally"
+          },
+          "attendees": [
+            {
+              "email": "oliver.mcnally@adenin.com",
+              "name": "Oliver McNally",
+              "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+              "response": "organizer"
+            }
+          ],
+          "isPast": true
+        },
+        {
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYTAAA=",
+          "title": "Test Future",
+          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYTAAA%3D&exvsurl=1&path=/calendar/item",
+          "isCancelled": false,
+          "isRecurring": false,
+          "description": "",
+          "date": "2020-02-17T17:00:00Z",
+          "endDate": "2020-02-17T17:30:00Z",
+          "duration": "30 minutes",
+          "location": null,
+          "thumbnail": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+          "imageIsAvatar": true,
+          "organizer": {
+            "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+            "email": "oliver.mcnally@adenin.com",
+            "name": "Oliver McNally"
+          },
+          "attendees": [
+            {
+              "email": "oliver.mcnally@adenin.com",
+              "name": "Oliver McNally",
+              "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+              "response": "organizer"
+            }
+          ]
+        }
+      ],
+      "_hash": "62b2f864fc1c56c6bb09dd6580730dd3",
       "title": "Events Today",
       "link": "https://outlook.office365.com/mail/inbox",
       "linkLabel": "All events",
-      "actionable": false,
+      "actionable": true,
       "integration": "Outlook",
-      "description": "You have no events today.",
+      "pastCount": 1,
+      "value": 1,
+      "date": "2020-02-17T17:00:00Z",
+      "description": "You have 1 event today.",
+      "briefing": "You have 1 event today. The next is 'Test Future' at 5:00 PM",
       "_settings": {}
     }
   preview-mode: live
