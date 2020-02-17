@@ -22,13 +22,13 @@ properties:
     view: |-
       <div class="layout-vertical">
       	<div class="layout-horizontal pl pb bb">
-      		<span class="font-headline layout-center-aligned"><at-carbon-moment class="green mrsm" format="LT"></at-carbon-moment><at-carbon-moment format="dddd"></at-carbon-moment>,<at-carbon-moment class="mlsm" format="LL"></at-carbon-moment></span>
+      		<span class="font-headline layout-center-aligned"><at-carbon-moment class="green mrsm" format="LT" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment><at-carbon-moment format="dddd" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment>,<at-carbon-moment class="mlsm" format="LL" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment></span>
       	</div>
       	{% if items.length < 1 %}
       		<div class="layout-vertical layout-center-center pblg pt">
       			<div class="font-headline green">You have no events today</div>
-      			<div class="font-subhead ptsm px mx" style="text-align:center">You can go to Outlook to view your calendar, schedule events, etc.</div>
-      			<at-carbon-button class="events-join-btn mt" button-type="contained" button-color="grey" href="{{ link }}">Go to Outlook</at-carbon-button>
+      			<div class="font-subhead ptsm px mx" style="text-align:center">You can go to {{ integration }} to view your calendar, schedule events, etc.</div>
+      			<at-carbon-button class="events-join-btn mt" button-type="contained" button-color="grey" href="{{ link }}">Go to {{ integration }}</at-carbon-button>
       		</div>
       	{% else %}
       		<div class="font-subhead pl py">
@@ -148,11 +148,12 @@ $meta:
       "_page": 1,
       "_pageSize": 20,
       "items": [],
-      "_hash": "c094df23818af3cb3a22b1404dbe90a8",
+      "_hash": "124f72b80e44e2d16adb924ea104ff6c",
       "title": "Events Today",
       "link": "https://outlook.office365.com/mail/inbox",
       "linkLabel": "All events",
       "actionable": false,
+      "integration": "Outlook",
       "description": "You have no events today.",
       "_settings": {}
     }
