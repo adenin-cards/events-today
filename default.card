@@ -22,7 +22,7 @@ properties:
     view: |-
       <div class="layout-vertical">
       	<div class="layout-horizontal pl pb bb">
-      		<span class="font-headline layout-center-aligned"><at-carbon-moment class="green mrsm" format="LT" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment><at-carbon-moment format="dddd" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment>,<at-carbon-moment class="mlsm" format="LL" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment></span>
+      		<span class="font-title layout-center-aligned"><at-carbon-moment class="green mrsm" format="LT" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment><at-carbon-moment format="dddd" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment>,<at-carbon-moment class="mlsm" format="LL" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment></span>
       	</div>
       	{% if items.length < 1 %}
       		<div class="layout-vertical layout-center-center pblg pt">
