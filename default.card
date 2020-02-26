@@ -21,57 +21,60 @@ properties:
     model: 
     view: |-
       <div class="layout-vertical">
-      	<div class="layout-horizontal pl pb bb">
-      		<span class="font-title layout-center-aligned"><at-carbon-moment class="green mrsm" format="LT" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment><at-carbon-moment format="dddd" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment>,<at-carbon-moment class="mlsm" format="LL" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment></span>
-      	</div>
-      	{% if items.length < 1 %}
-      		<div class="layout-vertical layout-center-center pblg pt">
-      			<div class="font-headline green">You have no events today</div>
-      			<div class="font-subhead ptsm px mx" style="text-align:center">You can go to {{ integration }} to view your calendar, schedule events, etc.</div>
-      			<at-carbon-button class="events-join-btn mt" button-type="contained" button-color="grey" href="{{ link }}">Go to {{ integration }}</at-carbon-button>
-      		</div>
-      	{% else %}
-      		<div class="font-subhead pl py">
-      			You have {{items.length}} {% if items.length == 1 %}event{% else %}events{% endif %} today.
-      		</div>
-      		{% for item in items %}
-      			{% assign futureIndex = forloop.index | minus: pastCount %}
-      			<div class="layout-horizontal mllg pl mr pbsm pt {% if futureIndex > 1 %}expanded-only{%endif%}" style="border-left:2px solid #eeeeee;margin-left:33px;padding-left:23px">
-      				<div class="layout-flex text-primary">
-      					<div class="layout-horizontal layout-center mr">
-      						<div class="{% if item.isCancelled %}background-red{% elsif item.isPast %}background-grey{% else %}background-blue{% endif %}" style="border-radius:50%;width:8px;height:8px;position:relative;left:-28px"></div>
-      						<at-carbon-moment class="font-caption font-bold {% if item.isCancelled %}red{% elsif item.isPast %}grey{% else %}blue{% endif %}" datetime="{{ item.date }}" format="LT" style="position:relative;left:-8px"></at-carbon-moment>
-      					</div>
-      					<div class="font-subhead ptsm" style="{% if item.isCancelled %}text-decoration:line-through{% endif %}">{{ item.title }}</div>
-      					<div class="layout-horizontal layout-center ptsm">
-      						{% if item.organizer.avatar %}
-      							<iron-image src="{{ item.organizer.avatar }}" sizing="cover" preload class="events-organizer-avatar mrsm"></iron-image>
-      						{% endif %}
-      						<div class="layout-horizontal font-body">
-      							{% if item.organizer.name %}
-      								<span>{{ item.organizer.name }}</span><span class="mxsm">•</span>
-      							{% elsif item.organizer.email %}
-      								<span>{{ item.organizer.email }}</span><span class="mxsm">•</span>
-      							{% endif %}
-      							<span class="grey">{{ item.duration }}</span>
-      						</div>
-      					</div>
-      					<div class="layout-vertical mt mbsm">
-      						<div class="layout-horizontal layout-center">
-      							{% if item.onlineMeetingUrl %}
-      								<at-carbon-button class="events-join-btn ml0 mr" button-type="contained" button-color="green" href="{{ item.onlineMeetingUrl }}">Join meeting</at-carbon-button>
-      							{% endif %}
-      							{% if item.attendees.length > 1 or item.location or item.description %}
-      								<span class="mrsm blue events-detail-btn" index="{{forloop.index}}" at-click-action="dialog" dialog-title="{{item.title}}">Details</span>
-      							{% endif %}
-      						</div>
-      					</div>
-      				</div>
-      			</div>
-      			{% if forloop.index == items.length %}<div class="pysm"></div>{% endif %}
-      		{% endfor %}
-      	{% endif %}
-      </div>
+            	<div class="layout-horizontal pl pb bb">
+            		<span class="font-title layout-center-aligned"><at-carbon-moment class="green mrsm" format="LT" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment><at-carbon-moment format="dddd" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment>,<at-carbon-moment class="mlsm" format="LL" auto-refresh="1" auto-refresh-rate="0.5"></at-carbon-moment></span>
+            	</div>
+            	{% if items.length < 1 %}
+            		<div class="layout-vertical layout-center-center pblg pt">
+            			<div class="font-headline green">You have no events today</div>
+            			<div class="font-subhead ptsm px mx" style="text-align:center">You can go to {{ integration }} to view your calendar, schedule events, etc.</div>
+            			<at-carbon-button class="events-join-btn mt" button-type="contained" button-color="grey" href="{{ link }}">Go to {{ integration }}</at-carbon-button>
+            		</div>
+            	{% else %}
+            		<div class="font-subhead pl py">
+            			You have {{items.length}} {% if items.length == 1 %}event{% else %}events{% endif %} today.
+            		</div>
+            		{% for item in items %}
+            			{% assign futureIndex = forloop.index | minus: pastCount %}
+            			<div class="layout-horizontal mllg pl mr pbsm pt {% if futureIndex > 1 %}expanded-only{%endif%}" style="border-left:2px solid #eeeeee;margin-left:33px;padding-left:23px">
+            				<div class="layout-flex text-primary">
+            					<div class="layout-horizontal layout-center mr">
+            						<div class="{% if item.isCancelled %}background-red{% elsif item.isPast %}background-grey{% else %}background-blue{% endif %}" style="border-radius:50%;width:8px;height:8px;position:relative;left:-28px"></div>
+            						<at-carbon-moment class="font-caption font-bold {% if item.isCancelled %}red{% elsif item.isPast %}grey{% else %}blue{% endif %}" datetime="{{ item.date }}" format="LT" style="position:relative;left:-8px"></at-carbon-moment>
+            					</div>
+      								<div class="layout-horizontal layout-center mr ptsm">
+      									<div class="font-subhead" style="{% if item.isCancelled %}text-decoration:line-through{% endif %}">{{ item.title }}</div>
+      									{% if item.isRecurring %}<at-carbon-icon icon="now:synchronize" class="grey mlsm" style="min-width:16px;max-width:16px;min-height:16px;max-height:16px"></at-carbon-icon>{% endif %}
+      								</div>
+            					<div class="layout-horizontal layout-center ptsm">
+            						{% if item.organizer.avatar %}
+            							<iron-image src="{{ item.organizer.avatar }}" sizing="cover" preload class="events-organizer-avatar mrsm"></iron-image>
+            						{% endif %}
+            						<div class="layout-horizontal font-body">
+            							{% if item.organizer.name %}
+            								<span>{{ item.organizer.name }}</span><span class="mxsm">•</span>
+            							{% elsif item.organizer.email %}
+            								<span>{{ item.organizer.email }}</span><span class="mxsm">•</span>
+            							{% endif %}
+            							<span class="grey">{{ item.duration }}</span>
+            						</div>
+            					</div>
+            					<div class="layout-vertical mt mbsm">
+            						<div class="layout-horizontal layout-center">
+            							{% if item.onlineMeetingUrl %}
+            								<at-carbon-button class="events-join-btn ml0 mr" button-type="contained" button-color="green" href="{{ item.onlineMeetingUrl }}">Join meeting</at-carbon-button>
+            							{% endif %}
+            							{% if item.attendees.length > 1 or item.location or item.description %}
+            								<span class="mrsm blue events-detail-btn" index="{{forloop.index}}" at-click-action="dialog" dialog-title="{{item.title}}">Details</span>
+            							{% endif %}
+            						</div>
+            					</div>
+            				</div>
+            			</div>
+            			{% if forloop.index == items.length %}<div class="pysm"></div>{% endif %}
+            		{% endfor %}
+            	{% endif %}
+            </div>
 
       <style>
       .events-ico {
@@ -87,6 +90,7 @@ properties:
 
       .events-join-btn .button-label {
         font-weight: 400;
+        color: white !important;
       }
 
       .events-detail-btn:hover {
@@ -150,20 +154,21 @@ $meta:
       "_pageSize": 20,
       "items": [
         {
-          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYSAAA=",
-          "title": "Test Past",
-          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYSAAA%3D&exvsurl=1&path=/calendar/item",
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQFRAAgI17pO0p4AAEYAAAAAYRSf8_MT1UqMf2Kx-ZsqkAcACeWxBXCX9EGt3ceiDpFKcgAAAAABDQAACeWxBXCX9EGt3ceiDpFKcgAAAABGGAAAEA==",
+          "title": "Test recurring description URL with long title that wraps into next line",
+          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQFRAAgI17pO0p4AAEYAAAAAYRSf8%2BMT1UqMf2Kx%2FZsqkAcACeWxBXCX9EGt3ceiDpFKcgAAAAABDQAACeWxBXCX9EGt3ceiDpFKcgAAAABGGAAAEA%3D%3D&exvsurl=1&path=/calendar/item",
           "isCancelled": false,
-          "isRecurring": false,
-          "description": "",
-          "date": "2020-02-17T08:00:00Z",
-          "endDate": "2020-02-17T11:30:00Z",
-          "duration": "4 hours",
+          "isRecurring": true,
+          "description": "Lorem ipsum https://google.com dolor sit amet",
+          "date": "2020-02-26T17:00:00Z",
+          "endDate": "2020-02-26T17:30:00Z",
+          "duration": "30 minutes",
+          "onlineMeetingUrl": "https://google.com",
           "location": null,
-          "thumbnail": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+          "thumbnail": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
           "imageIsAvatar": true,
           "organizer": {
-            "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+            "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
             "email": "oliver.mcnally@adenin.com",
             "name": "Oliver McNally"
           },
@@ -171,27 +176,27 @@ $meta:
             {
               "email": "oliver.mcnally@adenin.com",
               "name": "Oliver McNally",
-              "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+              "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
               "response": "organizer"
             }
-          ],
-          "isPast": true
+          ]
         },
         {
-          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYTAAA=",
-          "title": "Test Future",
-          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYTAAA%3D&exvsurl=1&path=/calendar/item",
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYXAAA=",
+          "title": "Test non-recurring description URL",
+          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAAAAEYXAAA%3D&exvsurl=1&path=/calendar/item",
           "isCancelled": false,
           "isRecurring": false,
-          "description": "",
-          "date": "2020-02-17T17:00:00Z",
-          "endDate": "2020-02-17T17:30:00Z",
+          "description": "Lorem ipsum dolor https://google.com  sit amet",
+          "date": "2020-02-26T17:00:00Z",
+          "endDate": "2020-02-26T17:30:00Z",
           "duration": "30 minutes",
+          "onlineMeetingUrl": "https://google.com",
           "location": null,
-          "thumbnail": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+          "thumbnail": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
           "imageIsAvatar": true,
           "organizer": {
-            "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+            "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
             "email": "oliver.mcnally@adenin.com",
             "name": "Oliver McNally"
           },
@@ -199,23 +204,23 @@ $meta:
             {
               "email": "oliver.mcnally@adenin.com",
               "name": "Oliver McNally",
-              "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=http%3A%2F%2Flocalhostavatar%2FOM",
+              "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
               "response": "organizer"
             }
           ]
         }
       ],
-      "_hash": "62b2f864fc1c56c6bb09dd6580730dd3",
+      "_hash": "f12e6212219ec69893c0c9eb7e4b3aeb",
       "title": "Events Today",
       "link": "https://outlook.office365.com/mail/inbox",
       "linkLabel": "All events",
       "actionable": true,
       "integration": "Outlook",
-      "pastCount": 1,
-      "value": 1,
-      "date": "2020-02-17T17:00:00Z",
-      "description": "You have 1 event today.",
-      "briefing": "You have 1 event today. The next is 'Test Future' at 5:00 PM",
+      "pastCount": 0,
+      "value": 2,
+      "date": "2020-02-26T17:00:00Z",
+      "description": "You have 2 events today.",
+      "briefing": "You have 2 events today. The next is 'Test recurring description URL with long title that wraps into next line' at 5:00 PM",
       "_settings": {}
     }
   preview-mode: live

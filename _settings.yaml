@@ -1,71 +1,26 @@
-contentType: Card
-UserActions:
-  cardId: !!int 63
-  hasNotifications: !!bool false
-  isIsoloated: !!bool false
-  maxItems: !!int 3
-  pinnable: !!bool true
-title: Today's Events
-name: events-today
-CollectionModeField: null
-MaxItemsField: null
-PriorityField: null
-StreamSource: null
-CardComponent: events-today/events-today-card
-StoreMetadataField: null
-CommonPart:
-  Owner: !!int 2
-  Container: null
-  CreatedUtc: 2018-11-23T10:37:54.5789269Z
-  PublishedUtc: 2018-11-23T10:37:54.7985842Z
-  ModifiedUtc: 2018-11-23T10:37:54.5789269Z
-  VersionCreatedUtc: 2018-11-23T10:37:54.5789269Z
-  VersionPublishedUtc: 2018-11-23T10:37:54.7985842Z
-  VersionModifiedUtc: 2018-11-23T10:37:54.5789269Z
-ServicePart:
-  ConnectorTypeName: ScriptConnector
-  ConnectorTypeId: !!int 9
-  ConnectorName: ms-graph
-  ServiceName: events-today
-  Url: ~/api/adenin.GateKeeper.Connector/ms-graph/events-today
-  ServiceParameters: '{}'
-SearchContextPart:
-  Query: null
-  Interface: null
-CommandPart:
-  CommandType: None
-  Command: 
-  DefaultDate: null
-  Intent: null
-  Ext: {}
-AppPart:
-  App: null
-  Url: 
-  ExtUrl: 
-  Priority: !!int 0
-  AppFaceId: !!int 0
-  Category: orange
-  Icon: now:search
-  CSSClasses: null
-  Enabled: !!bool false
-  NewWindow: !!bool false
-  UrlWithId: !!bool true
-  AvailableAppFaceRecords: null
-  HasPattern: !!bool false
-RoleViewPermissionsPart:
-  AllowedRoles: []
-  Audiences:
+contentType: User
+title: Matt Wheal -X (mwheal - ZENSAR TECHNOLOGY (UK) LIMITED at Cisco)
+UserName: mwheal
+Email: mwheal@cisco.com
+Enabled: !!bool true
+FirstName: Matt
+MiddleName: 
+LastName: Wheal
+NickName: null
+DisplayName: Matt Wheal -X (mwheal - ZENSAR TECHNOLOGY (UK) LIMITED at Cisco)
+IsExternalUser: !!bool true
+UPN: 
+Gender: null
+LastLoginDate: 2019-09-26T11:05:26.0000000
+CardRequestedLast: 2017-07-11T12:29:47.0000000
+OTPSecret: null
+Timezone: Europe/London
+Locale: en-US
+LastOTPCheck: null
+UserRolesPart:
+  Roles:
     - Authenticated
-  Mandatory: False
-RecurringTaskPart:
-  Schedule: '- - - - -'
-  ActivityType: adenin.Now.Activities.CardTask.UpdateCard
-  StartDateUtc: null
-  EndDateUtc: null
-  NextOccurrenceUtc: null
-  Priority: !!int 5
-  Status: Enabled
-  NowFlag: 0
-  LastExecutionUTC: null
-  EnableWebHook: !!bool false
-  WebHookToken: null
+    - Administrator
+    - Red Badge
+    - cisco-cards-devs
+    - cisco-allmgrs

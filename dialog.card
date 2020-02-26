@@ -90,7 +90,7 @@ properties:
     modelRoot: state.model
 rules: []
 $meta:
-  cardId: 26
+  cardId: -1
   preview-mode: live
   preview-container: event
   xclass: null
