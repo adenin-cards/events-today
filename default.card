@@ -33,18 +33,18 @@ properties:
       	{% else %}
       		{% if allDayCount > 0 %}
       			<div class="layout-horizontal layout-justified bb" style="background-color:#f5f5f5">
-      				<div class="layout-vertical">
+      				<div class="layout-vertical ptsm">
       					{% for item in items %}
       						{% if item.isAllDay %}
       							{% if forloop.index < 3 or expandAllDay %}
-      								<div class="black px pysm">{{ item.title }}</div>
+      								<div class="font-body1 black px pbsm">{{ item.title }}</div>
       							{% endif %}
       						{% endif %}
       					{% endfor %}
       				</div>
       				{% if allDayCount > 2 %}
       					{% assign hiddenCount = allDayCount | minus: 2 %}
-      					<div id="allDay" class="blue psm layout-self-end" at-click-action="expandAllDay">{% if expandAllDay %}Show less{% else %}{{ hiddenCount }} more{% endif %}</div>
+      					<div id="allDay" class="font-body1 blue psm layout-self-end" at-click-action="expandAllDay">{% if expandAllDay %}Show less{% else %}{{ hiddenCount }} more{% endif %}</div>
       				{% endif %}
       			</div>
       		{% endif %}
@@ -74,7 +74,7 @@ properties:
                       {% if item.organizer.avatar %}
                         <iron-image src="{{ item.organizer.avatar }}" sizing="cover" preload class="events-organizer-avatar mrsm"></iron-image>
                       {% endif %}
-                      <div class="layout-horizontal font-body">
+                      <div class="layout-horizontal font-body desktop-only">
                         {% if item.organizer.name %}
                           <span>{{ item.organizer.name }}</span><span class="mxsm">•</span>
                         {% elsif item.organizer.email %}
@@ -82,6 +82,14 @@ properties:
                         {% endif %}
                         <span class="grey">{{ item.duration }}</span>
                       </div>
+      								<div class="layout-vertical font-body mobile-only">
+                        {% if item.organizer.name %}
+                          <span>{{ item.organizer.name }}</span>
+                        {% elsif item.organizer.email %}
+                          <span>{{ item.organizer.email }}</span>
+                        {% endif %}
+                        <span class="grey">{{ item.duration }}</span>
+      								</div>
                     </div>
                     <div class="layout-vertical mt mbsm">
                       <div class="layout-horizontal layout-center">
@@ -174,23 +182,132 @@ properties:
     title: View Calendar
     model: 
 $meta:
-  cardId: 26
+  cardId: 10
   preview-data: |-
     {
       "thumbnail": "https://www.adenin.com/assets/images/wp-images/logo/office-365.svg",
       "_action": "firstpage",
       "_page": 1,
       "_pageSize": 20,
-      "items": [],
-      "_hash": "515124e092cbe28a72c71c7fcc986217",
+      "items": [
+        {
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAGhXECBAAA=",
+          "title": "Test Multi-Day",
+          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAGhXECBAAA%3D&exvsurl=1&path=/calendar/item",
+          "isCancelled": false,
+          "isRecurring": false,
+          "description": "Test",
+          "date": "2020-07-07T01:00:00+01:00",
+          "endDate": "2020-07-10T01:00:00+01:00",
+          "isAllDay": true,
+          "duration": "3 days",
+          "location": null,
+          "thumbnail": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
+          "imageIsAvatar": true,
+          "organizer": {
+            "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
+            "email": "oliver.mcnally@adenin.com",
+            "name": "Oliver McNally"
+          },
+          "attendees": [
+            {
+              "email": "oliver.mcnally@adenin.com",
+              "name": "Oliver McNally",
+              "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
+              "response": "organizer"
+            }
+          ]
+        },
+        {
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAGhXEB-AAA=",
+          "title": "Henry OOO",
+          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAGhXEB%2FAAA%3D&exvsurl=1&path=/calendar/item",
+          "isCancelled": false,
+          "isRecurring": false,
+          "description": "",
+          "date": "2020-07-07T01:00:00+01:00",
+          "endDate": "2020-07-11T01:00:00+01:00",
+          "isAllDay": true,
+          "duration": "4 days",
+          "location": null,
+          "thumbnail": "https://www.gravatar.com/avatar/5565df8c85df1e6dee3b7deca3757b08?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FHA",
+          "imageIsAvatar": true,
+          "organizer": {
+            "avatar": "https://www.gravatar.com/avatar/5565df8c85df1e6dee3b7deca3757b08?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FHA",
+            "email": "Henry.Amm@adenin.com",
+            "name": "Henry Amm"
+          },
+          "attendees": [
+            {
+              "email": "henry.amm@adenin.com",
+              "name": "Henry Amm",
+              "avatar": "https://www.gravatar.com/avatar/5565df8c85df1e6dee3b7deca3757b08?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FHA"
+            },
+            {
+              "email": "ma@adenin.com",
+              "name": "Martin Amm",
+              "avatar": "https://www.gravatar.com/avatar/adcf66543aff93fb0a2d5d44bb88f5aa?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FMA",
+              "response": "accepted"
+            },
+            {
+              "email": "charlotte.cameron@adenin.com",
+              "name": "Charlotte Cameron",
+              "avatar": "https://www.gravatar.com/avatar/64c2c88198b597e3cb1dd3dff50ef0d6?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FCC",
+              "response": "accepted"
+            },
+            {
+              "email": "oliver.mcnally@adenin.com",
+              "name": "Oliver McNally",
+              "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
+              "response": "accepted"
+            }
+          ],
+          "response": {
+            "status": "accepted",
+            "date": "2020-06-26T10:38:00Z"
+          }
+        },
+        {
+          "id": "AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ-z4xPVSox-YrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAGhXECAAAA=",
+          "title": "Test",
+          "link": "https://outlook.office365.com/owa/?itemid=AAMkAGVlMDhjZWJkLThmYjQtNGFlOC04YWMzLWVkYzU3ZTQ3MGJiYQBGAAAAAABhFJ%2Fz4xPVSox%2FYrH9myqQBwAJ5bEFcJf0Qa3dx6IOkUpyAAAAAAENAAAJ5bEFcJf0Qa3dx6IOkUpyAAGhXECAAAA%3D&exvsurl=1&path=/calendar/item",
+          "isCancelled": false,
+          "isRecurring": false,
+          "description": "Lorem ipsum",
+          "date": "2020-07-08T17:00:00+01:00",
+          "endDate": "2020-07-08T17:30:00+01:00",
+          "duration": "30 minutes",
+          "onlineMeetingUrl": "http://google.com",
+          "location": null,
+          "thumbnail": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
+          "imageIsAvatar": true,
+          "organizer": {
+            "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
+            "email": "oliver.mcnally@adenin.com",
+            "name": "Oliver McNally"
+          },
+          "attendees": [
+            {
+              "email": "oliver.mcnally@adenin.com",
+              "name": "Oliver McNally",
+              "avatar": "https://www.gravatar.com/avatar/bfd31e5a4732ac73769d4f2bb1062af4?s=192&d=https%3A%2F%2Fapp.adenin.com%2Favatar%2FOM",
+              "response": "organizer"
+            }
+          ]
+        }
+      ],
+      "_hash": "f479921d0442a6446a38ee1abac7f0a4",
+      "date": "2020-07-08T00:00:00Z",
       "title": "Events Today",
       "link": "https://outlook.office365.com/mail/inbox",
       "linkLabel": "All events",
-      "actionable": false,
+      "actionable": true,
       "integration": "Outlook",
       "pastCount": 0,
-      "allDayCount": 3,
-      "description": "You have no events today.",
+      "allDayCount": 2,
+      "value": 3,
+      "description": "You have 3 events today.",
+      "briefing": "You have 3 events today. The next is 'Test' at 5:00 PM",
       "_settings": {}
     }
   preview-mode: live
